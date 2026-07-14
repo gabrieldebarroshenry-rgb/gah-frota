@@ -4152,6 +4152,15 @@ updatedAt: Date.now()
 }));
 const ind = document.getElementById("save-indicator");
 if (ind) { ind.classList.add("show"); setTimeout(() => ind.classList.remove("show"), 2000); }
+// Sincroniza com a nuvem automaticamente após cada alteração salva, com um pequeno
+// atraso (debounce) para agrupar edições rápidas em um único envio, em vez de
+// depender de alguém clicar manualmente em "Sincronizar agora" (isso fazia com que
+// dados salvos em outros dispositivos, como o abastecimento do motorista, nunca
+// chegassem à nuvem automaticamente).
+if (typeof window.fbPushCloudData === 'function' && window._fbAuthed) {
+clearTimeout(window._fbSaveDebounce);
+window._fbSaveDebounce = setTimeout(function() { window.fbPushCloudData(); }, 1500);
+}
 } catch(e) {}
 }
 function toggleAdvFilter(module) {
@@ -14501,6 +14510,7 @@ window.switchTab = function(tabId, btn) {
         .catch(function(err) { console.warn('[Firebase] Falha ao sincronizar:', err.message); });
     } catch (e) { console.warn('[Firebase] Erro ao preparar dados para sync:', e.message); }
   }
+  window.fbPushCloudData = fbPushCloudData;
 
   // Ao carregar o app, compara nuvem x local pelo campo updatedAt e usa o mais recente.
   // "Empate" (ambos sem updatedAt) não faz nada, pra não entrar em loop de reload.
