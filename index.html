@@ -14339,6 +14339,17 @@ window.switchTab = function(tabId, btn) {
           fbPullCloudData();
         } else {
           window._fbAuthed = false;
+          // Sem sessão nenhuma salva (ex: celular do motorista pela primeira vez).
+          // Faz login anônimo só para poder LER os dados compartilhados (usuários,
+          // veículos etc.) antes do login local — sem isso, um dispositivo novo
+          // nunca conseguiria buscar o cadastro do motorista para validar a senha.
+          // Requer "Anonymous" habilitado em Firebase Console → Authentication → Sign-in method.
+          if (window._fbAuth && !window._fbAnonAttempted) {
+            window._fbAnonAttempted = true;
+            window._fbAuth.signInAnonymously().catch(function(err) {
+              console.warn('[Firebase] Login anônimo indisponível (ative em Authentication → Sign-in method):', err.message);
+            });
+          }
         }
       });
       window._fbReady = true;
