@@ -1866,10 +1866,17 @@ h2.page-title {
 }
 </style>
 <style>
-/* (removido) regra duplicada de menu-no-celular que usava display:none e
-   sobrescrevia — e desativava a animação de — o menu deslizante. O menu no
-   celular já é tratado pela regra @media(max-width:768px) principal, que o
-   esconde/mostra deslizando (transform: translateX). */
+@media (max-width: 768px) {
+  /* Trava o scroll horizontal fantasma do iOS Safari (a barra fixa fora da tela
+     criava uma área rolável invisível que "empurrava" o conteúdo para a direita). */
+  html, body { overflow-x: hidden !important; max-width: 100vw; }
+  #app-shell { overflow-x: hidden !important; max-width: 100vw; }
+  /* Esconde a barra lateral de vez quando fechada (método à prova de bug, sem a
+     área fantasma do transform). Quando aberta, vira o menu deslizante por cima. */
+  #sidebar:not(.mobile-open) { display: none !important; }
+  #sidebar.mobile-open { display: flex !important; position: fixed !important; top:0; left:0; bottom:0; width:260px; z-index:500; }
+  #main-area { margin-left: 0 !important; }
+}
 </style>
 <style>
 /* ═══ MODERNIZAÇÃO VISUAL ════════════════════════════════════════════ */
@@ -11299,7 +11306,7 @@ console.warn("Dados de usuários corrompidos, restaurando padrão.", e);
 }
 }
 const defaults = [
-{ username: "admin", password: "", role: "admin", name: "Administrador", needsSetup: true }
+{ username: "admin", password: "admin123", role: "admin", name: "Administrador" }
 ];
 safeStorage.set(USERS_KEY, JSON.stringify(defaults));
 return defaults;
@@ -11325,88 +11332,15 @@ icon.style.left = 'calc(100% - 30px)';
 });
 } catch (e) {}
 }
-// Consulta a nuvem para saber se já existe um admin com senha definida.
-// Usado para impedir que, num aparelho novo (antes do sync inicial), alguém
-// "recrie" a senha do admin por cima de uma que já existe. Falha → null (permite
-// o fluxo normal), nunca trava o login.
-async function fcFetchCloudAdmin() {
-try {
-if (!window._db) return null;
-try {
-const doc = await window._db.collection('frotacontrol').doc('gah_users').get();
-if (doc && doc.exists) { const d = doc.data(); if (d && d.users) { const a = d.users.find(u => u.username === 'admin' && u.role === 'admin'); if (a && a.password) return a; } }
-} catch(e) {}
-try {
-const doc2 = await window._db.collection('frotacontrol').doc('gah_data').get();
-if (doc2 && doc2.exists) { const d = doc2.data(); const list = d && d._extra && d._extra.usuarios; if (Array.isArray(list)) { const a = list.find(u => u.username === 'admin' && u.role === 'admin'); if (a && a.password) return a; } }
-} catch(e) {}
-} catch(e) {}
-return null;
-}
-// Define a senha do admin no primeiro acesso (ou quando a senha padrão antiga
-// ainda está em uso). Retorna null se deu certo, ou uma mensagem de erro.
-// Não há senha utilizável no código: a primeira senha forte digitada vira a senha.
-async function fcAdminSetup(candidate, users, plainPass, weakDefault) {
-const weak = ['admin','admin123','12345678','123456','1234567','password','senha','senha123','12345','qwerty','000000','111111','gah','frota','frotacontrol'];
-if (!plainPass) return weakDefault
-? "Senha padrão detectada. Crie uma senha nova para o admin (mín. 8 caracteres)."
-: "Primeiro acesso: crie uma senha para o admin (mín. 8 caracteres).";
-if (weakDefault && plainPass.toLowerCase() === 'admin123') return "A senha padrão precisa ser trocada por segurança. Digite uma senha NOVA (mín. 8 caracteres).";
-if (plainPass.length < 8) return "A senha do admin deve ter pelo menos 8 caracteres.";
-if (weak.indexOf(plainPass.toLowerCase()) !== -1) return "Essa senha é muito comum. Escolha uma mais forte.";
-const idx = users.findIndex(u => u.username === candidate.username);
-const hashed = await sha256Hex(plainPass);
-users[idx].password = hashed; delete users[idx].needsSetup;
-candidate.password = hashed; delete candidate.needsSetup;
-try { safeStorage.set(USERS_KEY, JSON.stringify(users)); } catch(e) {}
-if (typeof fbSyncUsers === 'function') { try { fbSyncUsers(users); } catch(e) {} }
-if (typeof showToast === 'function') showToast('✔ Senha do admin criada. Guarde-a em local seguro.');
-return null;
-}
 async function doLogin() {
 const user = document.getElementById("login-user").value.trim().toLowerCase();
 const pass = document.getElementById("login-pass").value;
 const users = getUsers();
 const candidate = users.find(u => u.username === user);
+const passOk = candidate ? await checkPassword(candidate, pass) : false;
+const found = passOk ? candidate : null;
 const errEl = document.getElementById("login-error");
 const btn   = document.getElementById("login-btn");
-// ── Primeiro acesso / senha padrão do admin ──────────────────────────────
-// O código não guarda senha utilizável. Se o admin ainda não definiu a sua
-// (ou ainda está na senha padrão conhecida), a senha digitada agora vira a
-// senha — exigindo o mínimo de força.
-let firstSetupDone = false;
-if (candidate && candidate.role === 'admin') {
-let weakDefault = false;
-try { weakDefault = looksHashed(candidate.password) && candidate.password === await sha256Hex('admin123'); } catch(e) {}
-if (candidate.needsSetup || !candidate.password || weakDefault) {
-// Antes de deixar definir a senha, confere se a nuvem já tem um admin com senha
-// real (caso de aparelho novo antes do sync inicial). Se tiver, adota essa senha
-// e pede o login normal — impede que alguém sobrescreva a senha existente.
-const cloudAdmin = await fcFetchCloudAdmin();
-let cloudReal = false;
-if (cloudAdmin && cloudAdmin.password && !cloudAdmin.needsSetup) {
-try { cloudReal = !(looksHashed(cloudAdmin.password) && cloudAdmin.password === await sha256Hex('admin123')); } catch(e) { cloudReal = true; }
-}
-if (cloudReal) {
-const cidx = users.findIndex(u => u.username === candidate.username);
-if (cidx > -1) { users[cidx].password = cloudAdmin.password; delete users[cidx].needsSetup; try { safeStorage.set(USERS_KEY, JSON.stringify(users)); } catch(e) {} }
-errEl.classList.remove("hidden");
-document.getElementById("login-error-text").textContent = "O admin já tem senha definida em outro dispositivo. Use a senha atual do admin.";
-document.getElementById("login-pass").value = "";
-return;
-}
-const setupErr = await fcAdminSetup(candidate, users, pass, weakDefault);
-if (setupErr) {
-errEl.classList.remove("hidden");
-document.getElementById("login-error-text").textContent = setupErr;
-document.getElementById("login-pass").value = "";
-return;
-}
-firstSetupDone = true;
-}
-}
-const passOk = firstSetupDone ? true : (candidate ? await checkPassword(candidate, pass) : false);
-const found = passOk ? candidate : null;
 if (!found) {
 errEl.classList.remove("hidden");
 document.getElementById("login-error-text").textContent =
@@ -11499,25 +11433,6 @@ if (greetingEl) {
 const h = new Date().getHours();
 greetingEl.innerHTML = h < 12 ? 'Bom dia <i class=fic-sun></i>' : h < 18 ? 'Boa tarde <i class=fic-sun></i>' : 'Boa noite <i class=fic-moon></i>';
 }
-try {
-// Aviso de "primeiro acesso" só numa instalação de fato nova (admin sem senha e
-// nenhum motorista cadastrado). Roda com atraso para dar tempo de a nuvem trazer
-// os dados reais — evita aparecer por engano no celular novo de um motorista antes
-// do sync. Não pré-preenche o usuário, para não induzir "admin" nem facilitar abuso.
-setTimeout(function() {
-try {
-if (safeStorage.get('fc_remembered_user')) return;
-const usersNow = (typeof getUsers === 'function') ? getUsers() : [];
-const adm = usersNow.find(u => u.role === 'admin');
-const hasDrivers = usersNow.some(u => u.role === 'driver');
-if (adm && (adm.needsSetup || !adm.password) && !hasDrivers) {
-const subEl = document.querySelector('#login-screen .login-form-sub');
-if (subEl) subEl.innerHTML = '<strong>Primeiro acesso.</strong> Entre com o usuário <strong>admin</strong> e escolha uma senha (mín. 8 caracteres) — ela será definida agora e não pode ser recuperada, então guarde-a bem.';
-const pInp = document.getElementById('login-pass');
-if (pInp) pInp.placeholder = 'Crie uma senha (mín. 8 caracteres)';
-}
-} catch(e) {}
-}, 3500);
 } catch(e) {}
 try {
 const raw = localStorage.getItem('frotacontrol_v3');
