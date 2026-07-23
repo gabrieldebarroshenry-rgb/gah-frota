@@ -11280,9 +11280,68 @@ renderAgenda();
 }
 const AUTH_KEY = "frotacontrol_auth";
 const USERS_KEY = "frotacontrol_users";
+// SHA-256 em JS puro — reserva para quando crypto.subtle não está disponível
+// (app aberto como arquivo local, ou contexto não-HTTPS). Produz exatamente o
+// mesmo hash da API do navegador, então é compatível com senhas já salvas.
+function _fcSha256Sync(ascii) {
+function rightRotate(value, amount) { return (value>>>amount) | (value<<(32-amount)); }
+var mathPow = Math.pow, maxWord = mathPow(2, 32), i, j, result = '', words = [];
+var asciiBitLength = ascii.length*8;
+var hash = _fcSha256Sync.h = _fcSha256Sync.h || [];
+var k = _fcSha256Sync.k = _fcSha256Sync.k || [];
+var primeCounter = k.length, isComposite = {};
+for (var candidate = 2; primeCounter < 64; candidate++) {
+if (!isComposite[candidate]) {
+for (i = 0; i < 313; i += candidate) { isComposite[i] = candidate; }
+hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+}
+}
+ascii += '\x80';
+while (ascii.length%64 - 56) ascii += '\x00';
+for (i = 0; i < ascii.length; i++) {
+j = ascii.charCodeAt(i);
+if (j>>8) return;
+words[i>>2] |= j << ((3 - i)%4)*8;
+}
+words[words.length] = ((asciiBitLength/maxWord)|0);
+words[words.length] = (asciiBitLength);
+for (j = 0; j < words.length;) {
+var w = words.slice(j, j += 16), oldHash = hash;
+hash = hash.slice(0, 8);
+for (i = 0; i < 64; i++) {
+var w15 = w[i - 15], w2 = w[i - 2];
+var a = hash[0], e = hash[4];
+var temp1 = hash[7]
++ (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
++ ((e&hash[5])^((~e)&hash[6])) + k[i]
++ (w[i] = (i < 16) ? w[i] : (
+w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
++ w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+) | 0);
+var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
++ ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+hash = [(temp1 + temp2)|0].concat(hash);
+hash[4] = (hash[4] + temp1)|0;
+}
+for (i = 0; i < 8; i++) { hash[i] = (hash[i] + oldHash[i])|0; }
+}
+for (i = 0; i < 8; i++) {
+for (j = 3; j + 1; j--) {
+var b = (hash[i]>>(j*8))&255;
+result += ((b < 16) ? 0 : '') + b.toString(16);
+}
+}
+return result;
+}
 async function sha256Hex(text) {
+try {
+if (typeof crypto !== 'undefined' && crypto.subtle && crypto.subtle.digest) {
 const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
 return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+} catch(e) {}
+return _fcSha256Sync(unescape(encodeURIComponent(text)));
 }
 function looksHashed(str) {
 return typeof str === 'string' && /^[a-f0-9]{64}$/i.test(str);
@@ -11300,7 +11359,20 @@ function getUsers() {
 const raw = safeStorage.get(USERS_KEY);
 if (raw) {
 try {
-return JSON.parse(raw);
+const users = JSON.parse(raw);
+// Recuperação única: garante que o admin volte para admin123 (limpa resíduos
+// dos testes de senha — senha vazia, needsSetup, ou hash de senha esquecida).
+// Roda só uma vez; depois disso, mudanças de senha feitas pelo app permanecem.
+if (Array.isArray(users) && !safeStorage.get('fc_admin_pw_reset_v2')) {
+let changed = false;
+users.forEach(u => { if (u && u.role === 'admin') { u.password = 'admin123'; if (u.needsSetup) delete u.needsSetup; changed = true; } });
+safeStorage.set('fc_admin_pw_reset_v2', '1');
+if (changed) {
+safeStorage.set(USERS_KEY, JSON.stringify(users));
+if (typeof fbSyncUsers === 'function') { try { fbSyncUsers(users); } catch(e) {} }
+}
+}
+return users;
 } catch(e) {
 console.warn("Dados de usuários corrompidos, restaurando padrão.", e);
 }
@@ -11309,6 +11381,7 @@ const defaults = [
 { username: "admin", password: "admin123", role: "admin", name: "Administrador" }
 ];
 safeStorage.set(USERS_KEY, JSON.stringify(defaults));
+safeStorage.set('fc_admin_pw_reset_v2', '1');
 return defaults;
 }
 function showLoginTruckLoader() {
@@ -11433,7 +11506,6 @@ if (greetingEl) {
 const h = new Date().getHours();
 greetingEl.innerHTML = h < 12 ? 'Bom dia <i class=fic-sun></i>' : h < 18 ? 'Boa tarde <i class=fic-sun></i>' : 'Boa noite <i class=fic-moon></i>';
 }
-} catch(e) {}
 try {
 const raw = localStorage.getItem('frotacontrol_v3');
 if (raw) {
