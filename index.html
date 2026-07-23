@@ -1866,11 +1866,10 @@ h2.page-title {
 }
 </style>
 <style>
-@media (max-width: 768px) {
-  #sidebar:not(.mobile-open) { display: none !important; }
-  #sidebar.mobile-open { display: flex !important; position: fixed !important; top:0; left:0; bottom:0; width:260px; z-index:500; }
-  #main-area { margin-left: 0 !important; }
-}
+/* (removido) regra duplicada de menu-no-celular que usava display:none e
+   sobrescrevia — e desativava a animação de — o menu deslizante. O menu no
+   celular já é tratado pela regra @media(max-width:768px) principal, que o
+   esconde/mostra deslizando (transform: translateX). */
 </style>
 <style>
 /* ═══ MODERNIZAÇÃO VISUAL ════════════════════════════════════════════ */
@@ -2275,7 +2274,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
   updateTopbarProfile();
   setInterval(updateTopbarProfile, 3000);
 })();
-</script><div id="content" role="main" aria-label="Conteúdo principal"> <div class="tab active" id="tab-dashboard"> <div class="backup-bar"> <span class="backup-bar-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> BACKUP</span> <button class="btn btn-sm btn-secondary" onclick="exportBackup()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Exportar JSON</button> <button class="btn btn-sm btn-secondary" onclick="document.getElementById('import-file').click()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Importar JSON</button> <button class="btn btn-sm btn-secondary" onclick="exportPDF()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h2m4 0h-2m-2 0v3m0-3a1 1 0 1 0 0-2H9v5"/></svg> Exportar PDF</button> <button class="btn btn-sm btn-secondary" onclick="fbSyncNow()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 9 16 9"/></svg> Sincronizar agora</button> <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(event)"> </div> <div id="backup-warn-bar"></div> <div id="dash-greeting" style="font-size:14px;color:var(--text-secondary);margin-bottom:6px;display:flex;align-items:center;gap:6px"></div> <div class="page-hdr"> <h2 class="page-title">Dashboard</h2> <div class="page-hdr-right"> <div class="dash-period-ctrl" id="dash-period-ctrl"> <button class="dpc-btn" data-val="1" onclick="setDashPeriod(1,this)">Este mês</button> <button class="dpc-btn" data-val="3" onclick="setDashPeriod(3,this)">3m</button> <button class="dpc-btn active" data-val="6" onclick="setDashPeriod(6,this)">6m</button> <button class="dpc-btn" data-val="12" onclick="setDashPeriod(12,this)">12m</button> <button class="dpc-btn" data-val="custom" onclick="setDashPeriod('custom',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Personalizado</button> </div> <div class="dash-custom-range" id="dash-custom-range" style="display:none"> <input type="date" class="filter-sel" id="dash-date-from" onchange="applyCustomPeriod()" style="width:130px"> <span style="color:var(--text-muted);font-size:13px">até</span> <input type="date" class="filter-sel" id="dash-date-to" onchange="applyCustomPeriod()" style="width:130px"> </div> <select id="dash-period" style="display:none"> <option value="6" selected>6</option> </select> <select class="filter-sel" id="dash-filter"> <option value="all">Toda a frota</option> </select> </div> </div> <div class="dash-section-label">Indicadores Financeiros</div> <div class="kpi-hero-strip" id="kpi-hero"></div> <div class="kpi-strip" id="kpi-financial"></div> <div id="dash-goals-panel" style="margin-bottom:16px"></div> <div id="dash-compare-panel" style="margin-bottom:16px"></div> <div class="dash-section-label">Indicadores Operacionais</div> <div class="kpi-strip" id="kpi-operational"></div> <div id="alerts-center-panel"></div> <div class="dash-section-label">Financeiro &amp; Impostos</div> <div class="kpi-strip" id="dash-fin-tax-strip" style="margin-bottom:16px"></div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"> <span>Receitas vs Despesas</span> <span class="chart-card-badge badge-green" id="badge-balance"></span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRevenueExpense"></canvas></div> </div> <div class="chart-card"> <div class="chart-card-title"><span>Resultado por Veículo</span></div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartVehicleResult"></canvas></div> </div> </div> <div style="margin-bottom:16px" id="row-2-dash"> <div class="chart-card" style="max-width:400px"> <div class="chart-card-title"><span>Combustível — Custo Mensal</span></div> <div class="chartjs-wrap chartjs-wrap-pie"><canvas id="chartFuelMonthly"></canvas></div> </div> </div> <div style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"><span>Saldo Acumulado no Período</span></div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartAccumulated"></canvas></div> </div> </div> <div class="dash-section-label">Análise de Rentabilidade</div> <div class="kpi-strip" id="kpi-rentabilidade"></div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Receita por Rota — Top 8</span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRouteRevenue"></canvas></div> </div> <div class="chart-card"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Margem por Rota</span> <span class="chart-card-badge badge-green" id="badge-best-route"></span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRouteMargin"></canvas></div> </div> </div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg> Rentabilidade Detalhada por Rota</span> <select class="filter-sel" id="route-sort" onchange="renderRouteTable()" style="font-size:12px;padding:4px 10px;height:auto"> <option value="revenue">Ordenar: Maior Receita</option> <option value="margin">Ordenar: Maior Margem</option> <option value="count">Ordenar: Mais Fretes</option> <option value="ticket">Ordenar: Maior Ticket Médio</option> </select> </div> <div id="route-table-wrap"></div> </div> <div class="dash-section-label">Rentabilidade por Veículo</div> <div class="vrent-grid" id="vrent-cards"></div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1.5"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Comparativo de Frota</span> <select class="filter-sel" id="vrent-sort" onchange="renderVehicleRentability()" style="font-size:12px;padding:4px 10px;height:auto"> <option value="margin">Ordenar: Maior Margem</option> <option value="revenue">Ordenar: Maior Receita</option> <option value="profit">Ordenar: Maior Lucro</option> <option value="freights">Ordenar: Mais Fretes</option> </select> </div> <div id="vrent-table-wrap"></div> </div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"><span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg> Top Fretes por Valor</span></div> <div id="dash-top-freights"></div> </div> <div class="chart-card"> <div class="chart-card-title"><span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg> Saúde da Frota</span></div> <div id="dash-fleet-health"></div> </div> </div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"><span>Últimos Lançamentos</span></div> <div id="recent-tx"></div> </div> </div> <div class="tab" id="tab-vehicles"> <div class="page-hdr"> <h2 class="page-title">Veículos <span id="veh-count" style="font-size:13px;font-weight:500;color:var(--text-muted)"></span></h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="veh-search" placeholder="Buscar placa, modelo..." oninput="renderVehicles()"></div> <select class="filter-sel" id="veh-filter-status" onchange="renderVehicles()"> <option value="all">Todos os status</option> <option value="ativo">Ativo</option> <option value="manutencao">Manutenção</option> <option value="inativo">Inativo</option> </select> <select class="filter-sel" id="veh-sort" onchange="renderVehicles()"> <option value="plate">Ordenar: Placa</option> <option value="model">Ordenar: Modelo</option> <option value="km">Ordenar: KM (maior)</option> <option value="balance">Ordenar: Saldo</option> </select> <button class="btn btn-primary" onclick="openModal('vehicle')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Veículo</button> </div> </div> <div class="grid-2" id="vehicles-grid"></div> </div> <div class="tab" id="tab-drivers"> <div class="page-hdr"> <h2 class="page-title">Motoristas <span id="drv-count" style="font-size:13px;font-weight:500;color:var(--text-muted)"></span></h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="drv-search" placeholder="Buscar nome, CPF..." oninput="renderDrivers()"></div> <select class="filter-sel" id="drv-filter-status" onchange="renderDrivers()"> <option value="all">Todos os status</option> <option value="ativo">Ativo</option> <option value="ferias">Férias</option> <option value="inativo">Inativo</option> </select> <select class="filter-sel" id="drv-filter-cnh" onchange="renderDrivers()"> <option value="all">Todas as CNHs</option> <option value="ok">CNH válida</option> <option value="expiring">CNH vencendo</option> <option value="expired">CNH vencida</option> </select> <select class="filter-sel" id="drv-sort" onchange="renderDrivers()"> <option value="name">Ordenar: Nome</option> <option value="freights">Ordenar: Mais fretes</option> <option value="cnh">Ordenar: Venc. CNH</option> </select> <button class="btn btn-primary" onclick="openModal('driver')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Motorista</button> </div> </div> <div class="grid-3" id="drivers-grid"></div> <div style="margin-top:32px"> <div class="page-hdr"> <div class="section-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ACESSOS AO SISTEMA</div> <button class="btn btn-secondary" onclick="openAddDriverUserModal()">+ Adicionar Acesso Motorista</button> </div> <div class="card"> <div class="table-head cols-4" style="grid-template-columns:1fr 1fr 1fr 80px"> <span>Nome</span><span>Usuário</span><span>Perfil</span><span></span> </div> <div id="driver-users-list"></div> </div> </div> </div> <div class="tab" id="tab-transactions"> <div class="page-hdr"> <h2 class="page-title">Lançamentos</h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="tx-search" aria-label="Buscar lançamentos" placeholder="Buscar lançamento..." oninput="renderTransactions()"></div> <button class="btn btn-primary" onclick="openModal('transaction')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Lançamento</button> </div> </div> <div class="inner-tabs"> <button class="inner-tab-btn active" data-txtab="list" onclick="setTxTab('list',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Lançamentos</button> <button class="inner-tab-btn" data-txtab="dre"      onclick="setTxTab('dre',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> DRE</button> <button class="inner-tab-btn" data-txtab="cashflow" onclick="setTxTab('cashflow',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Fluxo de Caixa</button> <button class="inner-tab-btn" data-txtab="costcenter" onclick="setTxTab('costcenter',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="1"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg> Centro de Custo</button> <button class="inner-tab-btn" data-txtab="conc"     onclick="setTxTab('conc',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Conciliação Bancária</button> </div> <div id="tx-panel-list">
+</script><div id="content" role="main" aria-label="Conteúdo principal"> <div class="tab active" id="tab-dashboard"> <div class="backup-bar"> <span class="backup-bar-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> BACKUP</span> <button class="btn btn-sm btn-secondary" onclick="exportBackup()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Exportar JSON</button> <button class="btn btn-sm btn-secondary" onclick="document.getElementById('import-file').click()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Importar JSON</button> <button class="btn btn-sm btn-secondary" onclick="exportPDF()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h2m4 0h-2m-2 0v3m0-3a1 1 0 1 0 0-2H9v5"/></svg> Exportar PDF</button> <button class="btn btn-sm btn-secondary" onclick="fbSyncNow()"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 9 16 9"/></svg> Sincronizar agora</button> <button class="btn btn-sm btn-secondary" onclick="fcRestoreSnapshots()" title="Desfazer uma sincronização ou importação restaurando o backup anterior"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.7 3M3 3v5h5"/></svg> Restaurar</button> <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(event)"> </div> <div id="backup-warn-bar"></div> <div id="dash-greeting" style="font-size:14px;color:var(--text-secondary);margin-bottom:6px;display:flex;align-items:center;gap:6px"></div> <div class="page-hdr"> <h2 class="page-title">Dashboard</h2> <div class="page-hdr-right"> <div class="dash-period-ctrl" id="dash-period-ctrl"> <button class="dpc-btn" data-val="1" onclick="setDashPeriod(1,this)">Este mês</button> <button class="dpc-btn" data-val="3" onclick="setDashPeriod(3,this)">3m</button> <button class="dpc-btn active" data-val="6" onclick="setDashPeriod(6,this)">6m</button> <button class="dpc-btn" data-val="12" onclick="setDashPeriod(12,this)">12m</button> <button class="dpc-btn" data-val="custom" onclick="setDashPeriod('custom',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Personalizado</button> </div> <div class="dash-custom-range" id="dash-custom-range" style="display:none"> <input type="date" class="filter-sel" id="dash-date-from" onchange="applyCustomPeriod()" style="width:130px"> <span style="color:var(--text-muted);font-size:13px">até</span> <input type="date" class="filter-sel" id="dash-date-to" onchange="applyCustomPeriod()" style="width:130px"> </div> <select id="dash-period" style="display:none"> <option value="6" selected>6</option> </select> <select class="filter-sel" id="dash-filter"> <option value="all">Toda a frota</option> </select> </div> </div> <div class="dash-section-label">Indicadores Financeiros</div> <div class="kpi-hero-strip" id="kpi-hero"></div> <div class="kpi-strip" id="kpi-financial"></div> <div id="dash-goals-panel" style="margin-bottom:16px"></div> <div id="dash-compare-panel" style="margin-bottom:16px"></div> <div class="dash-section-label">Indicadores Operacionais</div> <div class="kpi-strip" id="kpi-operational"></div> <div id="alerts-center-panel"></div> <div class="dash-section-label">Financeiro &amp; Impostos</div> <div class="kpi-strip" id="dash-fin-tax-strip" style="margin-bottom:16px"></div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"> <span>Receitas vs Despesas</span> <span class="chart-card-badge badge-green" id="badge-balance"></span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRevenueExpense"></canvas></div> </div> <div class="chart-card"> <div class="chart-card-title"><span>Resultado por Veículo</span></div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartVehicleResult"></canvas></div> </div> </div> <div style="margin-bottom:16px" id="row-2-dash"> <div class="chart-card" style="max-width:400px"> <div class="chart-card-title"><span>Combustível — Custo Mensal</span></div> <div class="chartjs-wrap chartjs-wrap-pie"><canvas id="chartFuelMonthly"></canvas></div> </div> </div> <div style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"><span>Saldo Acumulado no Período</span></div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartAccumulated"></canvas></div> </div> </div> <div class="dash-section-label">Análise de Rentabilidade</div> <div class="kpi-strip" id="kpi-rentabilidade"></div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Receita por Rota — Top 8</span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRouteRevenue"></canvas></div> </div> <div class="chart-card"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Margem por Rota</span> <span class="chart-card-badge badge-green" id="badge-best-route"></span> </div> <div class="chartjs-wrap chartjs-wrap-md"><canvas id="chartRouteMargin"></canvas></div> </div> </div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg> Rentabilidade Detalhada por Rota</span> <select class="filter-sel" id="route-sort" onchange="renderRouteTable()" style="font-size:12px;padding:4px 10px;height:auto"> <option value="revenue">Ordenar: Maior Receita</option> <option value="margin">Ordenar: Maior Margem</option> <option value="count">Ordenar: Mais Fretes</option> <option value="ticket">Ordenar: Maior Ticket Médio</option> </select> </div> <div id="route-table-wrap"></div> </div> <div class="dash-section-label">Rentabilidade por Veículo</div> <div class="vrent-grid" id="vrent-cards"></div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"> <span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1.5"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Comparativo de Frota</span> <select class="filter-sel" id="vrent-sort" onchange="renderVehicleRentability()" style="font-size:12px;padding:4px 10px;height:auto"> <option value="margin">Ordenar: Maior Margem</option> <option value="revenue">Ordenar: Maior Receita</option> <option value="profit">Ordenar: Maior Lucro</option> <option value="freights">Ordenar: Mais Fretes</option> </select> </div> <div id="vrent-table-wrap"></div> </div> <div class="grid-2" style="margin-bottom:16px"> <div class="chart-card"> <div class="chart-card-title"><span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg> Top Fretes por Valor</span></div> <div id="dash-top-freights"></div> </div> <div class="chart-card"> <div class="chart-card-title"><span class="chart-ttl-inner"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg> Saúde da Frota</span></div> <div id="dash-fleet-health"></div> </div> </div> <div class="chart-card" style="margin-bottom:16px"> <div class="chart-card-title"><span>Últimos Lançamentos</span></div> <div id="recent-tx"></div> </div> </div> <div class="tab" id="tab-vehicles"> <div class="page-hdr"> <h2 class="page-title">Veículos <span id="veh-count" style="font-size:13px;font-weight:500;color:var(--text-muted)"></span></h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="veh-search" placeholder="Buscar placa, modelo..." oninput="renderVehicles()"></div> <select class="filter-sel" id="veh-filter-status" onchange="renderVehicles()"> <option value="all">Todos os status</option> <option value="ativo">Ativo</option> <option value="manutencao">Manutenção</option> <option value="inativo">Inativo</option> </select> <select class="filter-sel" id="veh-sort" onchange="renderVehicles()"> <option value="plate">Ordenar: Placa</option> <option value="model">Ordenar: Modelo</option> <option value="km">Ordenar: KM (maior)</option> <option value="balance">Ordenar: Saldo</option> </select> <button class="btn btn-primary" onclick="openModal('vehicle')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Veículo</button> </div> </div> <div class="grid-2" id="vehicles-grid"></div> </div> <div class="tab" id="tab-drivers"> <div class="page-hdr"> <h2 class="page-title">Motoristas <span id="drv-count" style="font-size:13px;font-weight:500;color:var(--text-muted)"></span></h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="drv-search" placeholder="Buscar nome, CPF..." oninput="renderDrivers()"></div> <select class="filter-sel" id="drv-filter-status" onchange="renderDrivers()"> <option value="all">Todos os status</option> <option value="ativo">Ativo</option> <option value="ferias">Férias</option> <option value="inativo">Inativo</option> </select> <select class="filter-sel" id="drv-filter-cnh" onchange="renderDrivers()"> <option value="all">Todas as CNHs</option> <option value="ok">CNH válida</option> <option value="expiring">CNH vencendo</option> <option value="expired">CNH vencida</option> </select> <select class="filter-sel" id="drv-sort" onchange="renderDrivers()"> <option value="name">Ordenar: Nome</option> <option value="freights">Ordenar: Mais fretes</option> <option value="cnh">Ordenar: Venc. CNH</option> </select> <button class="btn btn-primary" onclick="openModal('driver')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Motorista</button> </div> </div> <div class="grid-3" id="drivers-grid"></div> <div style="margin-top:32px"> <div class="page-hdr"> <div class="section-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ACESSOS AO SISTEMA</div> <button class="btn btn-secondary" onclick="openAddDriverUserModal()">+ Adicionar Acesso Motorista</button> </div> <div class="card"> <div class="table-head cols-4" style="grid-template-columns:1fr 1fr 1fr 80px"> <span>Nome</span><span>Usuário</span><span>Perfil</span><span></span> </div> <div id="driver-users-list"></div> </div> </div> </div> <div class="tab" id="tab-transactions"> <div class="page-hdr"> <h2 class="page-title">Lançamentos</h2> <div class="page-hdr-right"> <div class="search-bar"><svg class="ui-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="tx-search" aria-label="Buscar lançamentos" placeholder="Buscar lançamento..." oninput="renderTransactions()"></div> <button class="btn btn-primary" onclick="openModal('transaction')"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Lançamento</button> </div> </div> <div class="inner-tabs"> <button class="inner-tab-btn active" data-txtab="list" onclick="setTxTab('list',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Lançamentos</button> <button class="inner-tab-btn" data-txtab="dre"      onclick="setTxTab('dre',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> DRE</button> <button class="inner-tab-btn" data-txtab="cashflow" onclick="setTxTab('cashflow',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Fluxo de Caixa</button> <button class="inner-tab-btn" data-txtab="costcenter" onclick="setTxTab('costcenter',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="1"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg> Centro de Custo</button> <button class="inner-tab-btn" data-txtab="conc"     onclick="setTxTab('conc',this)"><svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Conciliação Bancária</button> </div> <div id="tx-panel-list">
   <!-- ── Lançamento Rápido ─────────────────────────────────────────── -->
   <div id="tx-quick-panel" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -3162,14 +3161,8 @@ document.documentElement.setAttribute('data-theme', 'dark');
 const icon = document.getElementById('dark-mode-icon');
 if (icon) icon.innerHTML = `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
 }
-const collapsed = safeStorage.get('fc_sidebar_collapsed') === '1';
-if (collapsed && window.innerWidth > 768) {
-sidebarCollapsed = true;
-document.getElementById('sidebar').classList.add('collapsed');
-document.getElementById('main-area').classList.add('sidebar-collapsed');
-const chevron = document.getElementById('sidebar-chevron');
-if (chevron) chevron.textContent = '›';
-}
+// Estado manual de recolher desativado — a barra usa o modo hover no desktop.
+// Aplicar o estado salvo aqui conflitava com esse modo e sobrepunha o conteúdo.
 })();</script>
 <script>
 const PAGE_SIZE = 15;
@@ -4299,6 +4292,58 @@ safeStorage.set(BACKUP_AUTO_TS_KEY, now.toString());
 console.info('[FrotaControl] Backup automático salvo em', new Date(now).toLocaleString('pt-BR'));
 } catch(e) {}
 }
+// ── Rede de segurança contra perda de dados ──────────────────────────────
+// Tira uma "foto" do blob completo ANTES de qualquer substituição destrutiva
+// (nuvem mais recente sobrescrevendo o local, ou importação de JSON). Guarda as
+// 5 últimas. Diferente do auto-backup por tempo, dispara no exato momento de risco,
+// então nada é sobrescrito sem ter como voltar atrás.
+const SAFETY_SNAPS_KEY = 'fc_safety_snaps';
+function fcSafetySnapshot(reason) {
+try {
+const raw = safeStorage.get(STORAGE_KEY);
+if (!raw) return;
+let list = [];
+try { list = JSON.parse(safeStorage.get(SAFETY_SNAPS_KEY) || '[]') || []; } catch(e) {}
+list.push({ ts: Date.now(), reason: reason || 'substituição', data: raw });
+if (list.length > 5) list = list.slice(-5);
+safeStorage.set(SAFETY_SNAPS_KEY, JSON.stringify(list));
+} catch(e) {}
+}
+window.fcSafetySnapshot = fcSafetySnapshot;
+// Restaura a foto de segurança mais recente (ou o auto-backup, o que for mais novo)
+// e recarrega. É o "desfazer" caso uma sincronização ou importação traga dados
+// indesejados. O estado atual é guardado antes, então a própria restauração é reversível.
+window.fcRestoreSnapshots = function() {
+let list = [];
+try { list = JSON.parse(safeStorage.get(SAFETY_SNAPS_KEY) || '[]') || []; } catch(e) {}
+const auto   = safeStorage.get(BACKUP_AUTO_KEY);
+const autoTs = parseInt(safeStorage.get(BACKUP_AUTO_TS_KEY) || '0');
+let best = null;
+if (list.length) { const s = list[list.length-1]; best = { ts: s.ts, data: s.data, reason: s.reason, full: true }; }
+if (auto && autoTs && (!best || autoTs > best.ts)) best = { ts: autoTs, data: auto, reason: 'backup automático', full: false };
+if (!best) { if (typeof showToast==='function') showToast('Nenhum backup de segurança disponível ainda.', true); return; }
+const when = new Date(best.ts).toLocaleString('pt-BR');
+const go = function() {
+try {
+fcSafetySnapshot('antes de restaurar');
+let parsed = null; try { parsed = JSON.parse(best.data); } catch(e) {}
+if (parsed && parsed.vehicles) {
+safeStorage.set(STORAGE_KEY, best.data);
+} else if (parsed) {
+let cur = {}; try { cur = JSON.parse(safeStorage.get(STORAGE_KEY)||'{}')||{}; } catch(e) {}
+Object.keys(parsed).forEach(k => { if (k !== '_ts') cur[k] = parsed[k]; });
+cur.updatedAt = Date.now();
+safeStorage.set(STORAGE_KEY, JSON.stringify(cur));
+}
+if (typeof showToast==='function') showToast('✔ Backup restaurado. Recarregando...');
+setTimeout(function(){ location.reload(); }, 700);
+} catch(e) { if (typeof showToast==='function') showToast('Falha ao restaurar backup.', true); }
+};
+const msg = 'Restaurar os dados salvos em <strong>' + when + '</strong> (' + (best.reason||'') + ')? O estado atual será guardado antes, então dá para desfazer.';
+if (typeof showConfirm === 'function') {
+showConfirm({ title: 'Restaurar backup', msg: msg, variant: 'warning', okLabel: 'Restaurar', onOk: go });
+} else if (confirm('Restaurar os dados de ' + when + '?')) { go(); }
+};
 function updateBackupWarning() {
 const bar = document.getElementById('backup-warn-bar');
 if (!bar) return;
@@ -4523,7 +4568,7 @@ const d = JSON.parse(ev.target.result);
 if (!d.vehicles || !d.drivers) throw new Error("Formato inválido");
 showConfirm({
 title: "Importar Backup",
-msg: "Isso vai <strong>substituir todos os dados atuais</strong> pelos dados do arquivo. Esta ação não pode ser desfeita.",
+msg: "Isso vai <strong>substituir todos os dados atuais</strong> pelos dados do arquivo. Uma cópia dos dados atuais é guardada antes — você pode desfazer pelo botão <strong>Restaurar</strong>.",
 icon: `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`, variant: "warning", okLabel: "Importar",
 onOk: () => _doImportBackup(d)
 });
@@ -4533,6 +4578,7 @@ reader.readAsText(file);
 e.target.value = "";
 }
 function _doImportBackup(d) {
+fcSafetySnapshot('antes de importar');
 vehicles=d.vehicles||[]; drivers=d.drivers||[]; transactions=d.transactions||[];
 fueling=d.fueling||[]; freights=d.freights||[]; maintenance=d.maintenance||[];
 fines=d.fines||[]; docs=d.docs||[]; bills=d.bills||[]; contracts=d.contracts||[];
@@ -5875,6 +5921,8 @@ const pendingBills   = bills.filter(b=>!b.paid).reduce((a,b)=>a+b.amount,0);
 const pendingFines   = fines.filter(f=>f.status==="pendente").reduce((a,f)=>a+f.amount,0);
 const maintCost      = maintenance.filter(m=>m.done).reduce((a,m)=>a+m.cost,0);
 const fuelCost       = fueling.reduce((a,f)=>a+f.total,0);
+const pixSavings     = fueling.reduce((a,f)=>a+Math.max(0,(f.liters*f.pricePerLiter)-f.total),0);
+const pixSavingsCount= fueling.filter(f=>(f.pixDiscount||0)>0).length;
 const freightRevenue = freights.filter(f=>f.status==="concluido").reduce((a,f)=>a+f.value,0);
 const freightAlreadyInTx = txs.filter(t=>t.type==="income"&&t.category==="Frete").reduce((a,t)=>a+t.amount,0);
 const extraFreightRevenue = Math.max(0, freightRevenue - freightAlreadyInTx);
@@ -5896,6 +5944,11 @@ document.getElementById("kpi-financial").innerHTML = `
 <div class="kpi-label">Custo Combustível</div>
 <div class="kpi-value" style="color:var(--purple)">${fmt(fuelCost)}</div>
 <div class="kpi-sub">${fueling.reduce((a,f)=>a+f.liters,0).toFixed(0)} litros total</div>
+</div>
+<div class="kpi-card kpi-green">
+<div class="kpi-label">Economia Pix</div>
+<div class="kpi-value" style="color:var(--green)">${fmt(pixSavings)}</div>
+<div class="kpi-sub">${pixSavingsCount} abastecimento${pixSavingsCount!==1?"s":""} com desconto</div>
 </div>`;
 const incCount  = txs.filter(t=>t.type==="income").length;
 const expCount  = txs.filter(t=>t.type==="expense").length;
@@ -8567,11 +8620,11 @@ const paged = list.slice((fuelPage-1)*PAGE_SIZE, fuelPage*PAGE_SIZE);
 document.getElementById("fuel-list").innerHTML = paged.length ? paged.map(f=>`
 <div class="table-row cols-7">
 <span data-label="Veículo" style="color:var(--accent);font-weight:700;font-family:'Barlow Condensed',sans-serif">${vName(f.vehicleId)}</span>
-<span data-label="Data" style="color:var(--text-secondary);font-size:13px">${fmtDate(f.date)}</span>
+<span data-label="Data" style="color:var(--text-secondary);font-size:13px">${fmtDate(f.date)}${f.paymentMethod?`<br><span style="font-size:10px;font-weight:600;color:var(--text-muted)">${({pix:'Pix',dinheiro:'Dinheiro',cartao:'Cartão',boleto:'Boleto'})[f.paymentMethod]||''}</span>`:''}</span>
 <span data-label="Litros" style="color:var(--text-primary);font-size:13px">${f.liters} L</span>
 <span data-label="Preço/L" style="color:var(--text-primary);font-size:13px">R$ ${f.pricePerLiter.toFixed(2)}</span>
 <span data-label="KM" style="color:var(--text-secondary);font-size:13px">${f.km ? f.km.toLocaleString("pt-BR") + " km" : "—"}</span>
-<span data-label="Total" style="text-align:right;font-weight:700;font-family:'Barlow Condensed',sans-serif;color:var(--accent)">${fmt(f.total)}</span>
+<span data-label="Total" style="text-align:right;font-weight:700;font-family:'Barlow Condensed',sans-serif;color:var(--accent)">${fmt(f.total)}${f.pixDiscount>0?`<br><span style="font-size:10px;font-weight:600;color:#25D366">Pix −${f.pixDiscountType==='pct'?f.pixDiscount+'%':fmt(f.pixDiscount)}</span>`:''}</span>
 <span data-label="" style="display:flex;gap:4px;justify-content:flex-end">
 <button class="btn btn-sm btn-secondary" onclick="openEditFuelModal(${f.id})" title="Editar abastecimento" aria-label="Editar abastecimento"><svg class="ic btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
 <button class="btn btn-sm btn-secondary" onclick="deleteFueling(${f.id})" title="Excluir abastecimento" aria-label="Excluir abastecimento"><svg class="ic btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
@@ -8592,12 +8645,23 @@ body.innerHTML = `
 <div class="field"><label>Litros</label><input type="number" id="ef-liters" value="${f.liters}" min="0" step="0.1" oninput="updateEditFuelPreview()"></div>
 <div class="field"><label>Preço por litro (R$)</label><input type="number" id="ef-ppl" value="${f.pricePerLiter}" min="0" step="0.01" oninput="updateEditFuelPreview()"></div>
 </div>
+<div class="field"><label>Desconto Pix</label>
+<div style="display:flex;gap:8px">
+<input type="number" id="ef-disc" value="${f.pixDiscount||''}" placeholder="0" min="0" step="0.01" style="flex:1" oninput="updateEditFuelPreview()">
+<select id="ef-disc-type" style="max-width:80px" onchange="updateEditFuelPreview()"><option value="brl" ${(f.pixDiscountType||'brl')==='brl'?'selected':''}>R$</option><option value="pct" ${f.pixDiscountType==='pct'?'selected':''}>%</option></select>
+</div></div>
 <div id="ef-calc" class="fuel-preview"><span>TOTAL:</span><span id="ef-calc-val">${fmt(f.total)}</span></div>
+<div id="ef-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-6px 0 10px"></div>
 <div class="field-row">
 <div class="field"><label>Quilometragem</label><input type="number" id="ef-km" value="${f.km||''}" min="0"></div>
 <div class="field"><label>Data</label><input type="date" id="ef-date" value="${f.date}"></div>
 </div>
+<div class="field-row">
 <div class="field"><label>Posto</label><input type="text" id="ef-station" maxlength="80" value="${sanitizeText(f.station||'')}"></div>
+<div class="field"><label>Forma de pagamento</label>
+<select id="ef-payment"><option value="pix" ${(f.paymentMethod||'pix')==='pix'?'selected':''}>Pix</option><option value="dinheiro" ${f.paymentMethod==='dinheiro'?'selected':''}>Dinheiro</option><option value="cartao" ${f.paymentMethod==='cartao'?'selected':''}>Cartão</option><option value="boleto" ${f.paymentMethod==='boleto'?'selected':''}>Boleto</option></select>
+</div>
+</div>
 <div class="modal-actions">
 <button class="btn btn-primary" onclick="updateFueling(${f.id})">Salvar alterações</button>
 <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
@@ -8607,10 +8671,19 @@ _openModalOverlay();
 function updateEditFuelPreview() {
 const l = parseFloat(document.getElementById("ef-liters")?.value)||0;
 const p = parseFloat(document.getElementById("ef-ppl")?.value)||0;
+const disc = parseFloat(document.getElementById("ef-disc")?.value)||0;
+const dtype = document.getElementById("ef-disc-type")?.value||"brl";
 const el = document.getElementById("ef-calc");
 const valEl = document.getElementById("ef-calc-val");
+const hint = document.getElementById("ef-disc-hint");
+const gross = l * p;
+const r = fcFuelNet(gross, disc, dtype);
 if (el) el.style.display = (l && p) ? "" : "none";
-if (valEl) valEl.textContent = fmt(l * p);
+if (valEl) valEl.textContent = fmt(r.net);
+if (hint) {
+if (gross > 0 && r.discountBRL > 0) { hint.style.display = "block"; hint.textContent = `Bruto ${fmt(gross)} − desconto Pix ${fmt(r.discountBRL)}`; }
+else { hint.style.display = "none"; }
+}
 }
 function updateFueling(id) {
 const f = fueling.find(x => x.id === id); if (!f) return;
@@ -8620,10 +8693,14 @@ const pricePerLiter = parseFloat(document.getElementById("ef-ppl").value) || 0;
 const km            = Number(document.getElementById("ef-km").value) || 0;
 const date          = document.getElementById("ef-date").value;
 const station       = document.getElementById("ef-station").value.trim();
+const pixDiscount     = parseFloat(document.getElementById("ef-disc")?.value) || 0;
+const pixDiscountType = document.getElementById("ef-disc-type")?.value || "brl";
+const paymentMethod   = document.getElementById("ef-payment")?.value || "pix";
 if (!vehicleId || !liters || !pricePerLiter) { showToast("<i class=fic-xcircle></i> Veículo, litros e preço são obrigatórios.", true); return; }
 if (liters <= 0 || pricePerLiter <= 0) { showToast("<i class=fic-xcircle></i> Litros e preço devem ser maiores que zero.", true); return; }
 f.vehicleId = vehicleId; f.liters = liters; f.pricePerLiter = pricePerLiter;
-f.total = liters * pricePerLiter; f.km = km; f.date = date; f.station = station;
+f.total = fcFuelNet(liters * pricePerLiter, pixDiscount, pixDiscountType).net; f.km = km; f.date = date; f.station = station;
+f.pixDiscount = pixDiscount; f.pixDiscountType = pixDiscountType; f.paymentMethod = paymentMethod;
 // Atualiza o lançamento financeiro vinculado usando o ID direto (f.txId), em vez de
 // tentar "adivinhar" qual lançamento é o certo por categoria+valor+data — isso podia
 // atualizar o lançamento errado ou nenhum, deixando a despesa desatualizada/perdida.
@@ -9971,12 +10048,25 @@ body.innerHTML=`
 <div class="field"><label>Valor Total (R$)</label><input type="number" id="f-total" placeholder="0.00" min="0" step="0.01" oninput="updateFuelPreview('total')"></div>
 </div>
 <div class="field-hint" style="margin:-8px 0 14px">Preencha 2 dos 3 campos acima — o terceiro é calculado automaticamente.</div>
+<div class="field"><label>Desconto Pix</label>
+<div style="display:flex;gap:8px">
+<input type="number" id="f-disc" placeholder="0" min="0" step="0.01" style="flex:1" oninput="updateFuelPreview('disc')">
+<select id="f-disc-type" style="max-width:80px" onchange="updateFuelPreview('disc')"><option value="brl">R$</option><option value="pct">%</option></select>
+</div>
+<div class="field-hint" style="margin-top:4px">Desconto para pagamento no Pix — o total já sai com o desconto aplicado.</div>
+</div>
 <div id="fuel-calc" style="display:none" class="fuel-preview"><span>TOTAL:</span><span id="fuel-calc-val"></span></div>
+<div id="fuel-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-8px 0 14px"></div>
 <div class="field-row">
 <div class="field"><label>Quilometragem</label><input type="number" id="f-km" placeholder="100000" min="0"></div>
 <div class="field"><label>Data</label><input type="date" id="f-date" value="${today()}"></div>
 </div>
+<div class="field-row">
 <div class="field"><label>Posto</label><input type="text" id="f-station" maxlength="80" placeholder="Nome do posto"></div>
+<div class="field"><label>Forma de pagamento</label>
+<select id="f-payment"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="cartao">Cartão</option><option value="boleto">Boleto</option></select>
+</div>
+</div>
 <div class="modal-actions">
 <button class="btn btn-primary" onclick="saveFueling()">Salvar</button>
 <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
@@ -10173,6 +10263,19 @@ const type=document.getElementById("t-type").value;
 const cats=type==="income"?CATEGORIES_INCOME:CATEGORIES_EXPENSE;
 document.getElementById("t-category").innerHTML=`<option value="">Selecione...</option>`+cats.map(c=>`<option value="${c}">${c}</option>`).join("");
 }
+// Calcula o valor líquido de um abastecimento a partir do valor bruto e do desconto
+// Pix (em R$ ou %). Retorna o desconto convertido em reais e o total já líquido.
+// Usado tanto no cadastro quanto na edição, para manter a regra em um só lugar.
+function fcFuelNet(gross, disc, type) {
+gross = parseFloat(gross) || 0;
+disc  = parseFloat(disc)  || 0;
+let discountBRL = 0;
+if (disc > 0 && gross > 0) {
+discountBRL = (type === "pct") ? gross * (Math.min(disc, 100) / 100) : disc;
+if (discountBRL > gross) discountBRL = gross;
+}
+return { discountBRL, net: gross - discountBRL };
+}
 function updateFuelPreview(source) {
 const $ = id => document.getElementById(id);
 const gv = id => parseFloat($(id).value) || 0;
@@ -10189,11 +10292,24 @@ else if (total > 0) { sv("f-ppl", total / liters); }
 if (liters > 0) { sv("f-total", liters * ppl); }
 else if (total > 0) { sv("f-liters", total / ppl); }
 }
+// source === "disc": não recalcula litros/preço/total, só reaplica o desconto abaixo.
 
-total = gv("f-total");
+const gross = gv("f-total");
+const dtype = $("f-disc-type") ? $("f-disc-type").value : "brl";
+const r = fcFuelNet(gross, gv("f-disc"), dtype);
 const calc = document.getElementById("fuel-calc");
-if (total > 0) { calc.style.display = "block"; document.getElementById("fuel-calc-val").textContent = fmt(total); }
-else { calc.style.display = "none"; }
+const hint = document.getElementById("fuel-disc-hint");
+if (gross > 0) {
+calc.style.display = "block";
+document.getElementById("fuel-calc-val").textContent = fmt(r.net);
+if (hint) {
+if (r.discountBRL > 0) { hint.style.display = "block"; hint.textContent = `Bruto ${fmt(gross)} − desconto Pix ${fmt(r.discountBRL)}`; }
+else { hint.style.display = "none"; }
+}
+} else {
+calc.style.display = "none";
+if (hint) hint.style.display = "none";
+}
 }
 function saveVehicle() {
 const plate=document.getElementById("v-plate").value.trim().toUpperCase();
@@ -10329,11 +10445,14 @@ const pricePerLiter=parseFloat(document.getElementById("f-ppl").value)||0;
 const km=Number(document.getElementById("f-km").value)||0;
 const date=document.getElementById("f-date").value;
 const station=document.getElementById("f-station").value.trim();
+const pixDiscount=parseFloat(document.getElementById("f-disc")?.value)||0;
+const pixDiscountType=document.getElementById("f-disc-type")?.value||"brl";
+const paymentMethod=document.getElementById("f-payment")?.value||"pix";
 if (!vehicleId||!liters||!pricePerLiter){showToast("<i class=fic-xcircle></i> Veículo, litros e preço são obrigatórios.",true);return;}
 if (liters <= 0 || pricePerLiter <= 0){showToast("<i class=fic-xcircle></i> Litros e preço devem ser maiores que zero.",true);return;}
-const total=liters*pricePerLiter;
+const total=fcFuelNet(liters*pricePerLiter, pixDiscount, pixDiscountType).net;
 const txId = Date.now() + 1;
-fueling.push({id:Date.now(),vehicleId,liters,pricePerLiter,total,km,date,station,txId});
+fueling.push({id:Date.now(),vehicleId,liters,pricePerLiter,total,km,date,station,pixDiscount,pixDiscountType,paymentMethod,txId});
 transactions.push({id:txId,vehicleId,type:"expense",category:"Combustível",amount:total,date,desc:`Abastecimento — ${station}`});
 closeModal(); showToast("✔ Abastecimento registrado!"); saveData(); markStale('fuel');
 }
@@ -11180,7 +11299,7 @@ console.warn("Dados de usuários corrompidos, restaurando padrão.", e);
 }
 }
 const defaults = [
-{ username: "admin", password: "admin123", role: "admin", name: "Administrador" }
+{ username: "admin", password: "", role: "admin", name: "Administrador", needsSetup: true }
 ];
 safeStorage.set(USERS_KEY, JSON.stringify(defaults));
 return defaults;
@@ -11206,15 +11325,88 @@ icon.style.left = 'calc(100% - 30px)';
 });
 } catch (e) {}
 }
+// Consulta a nuvem para saber se já existe um admin com senha definida.
+// Usado para impedir que, num aparelho novo (antes do sync inicial), alguém
+// "recrie" a senha do admin por cima de uma que já existe. Falha → null (permite
+// o fluxo normal), nunca trava o login.
+async function fcFetchCloudAdmin() {
+try {
+if (!window._db) return null;
+try {
+const doc = await window._db.collection('frotacontrol').doc('gah_users').get();
+if (doc && doc.exists) { const d = doc.data(); if (d && d.users) { const a = d.users.find(u => u.username === 'admin' && u.role === 'admin'); if (a && a.password) return a; } }
+} catch(e) {}
+try {
+const doc2 = await window._db.collection('frotacontrol').doc('gah_data').get();
+if (doc2 && doc2.exists) { const d = doc2.data(); const list = d && d._extra && d._extra.usuarios; if (Array.isArray(list)) { const a = list.find(u => u.username === 'admin' && u.role === 'admin'); if (a && a.password) return a; } }
+} catch(e) {}
+} catch(e) {}
+return null;
+}
+// Define a senha do admin no primeiro acesso (ou quando a senha padrão antiga
+// ainda está em uso). Retorna null se deu certo, ou uma mensagem de erro.
+// Não há senha utilizável no código: a primeira senha forte digitada vira a senha.
+async function fcAdminSetup(candidate, users, plainPass, weakDefault) {
+const weak = ['admin','admin123','12345678','123456','1234567','password','senha','senha123','12345','qwerty','000000','111111','gah','frota','frotacontrol'];
+if (!plainPass) return weakDefault
+? "Senha padrão detectada. Crie uma senha nova para o admin (mín. 8 caracteres)."
+: "Primeiro acesso: crie uma senha para o admin (mín. 8 caracteres).";
+if (weakDefault && plainPass.toLowerCase() === 'admin123') return "A senha padrão precisa ser trocada por segurança. Digite uma senha NOVA (mín. 8 caracteres).";
+if (plainPass.length < 8) return "A senha do admin deve ter pelo menos 8 caracteres.";
+if (weak.indexOf(plainPass.toLowerCase()) !== -1) return "Essa senha é muito comum. Escolha uma mais forte.";
+const idx = users.findIndex(u => u.username === candidate.username);
+const hashed = await sha256Hex(plainPass);
+users[idx].password = hashed; delete users[idx].needsSetup;
+candidate.password = hashed; delete candidate.needsSetup;
+try { safeStorage.set(USERS_KEY, JSON.stringify(users)); } catch(e) {}
+if (typeof fbSyncUsers === 'function') { try { fbSyncUsers(users); } catch(e) {} }
+if (typeof showToast === 'function') showToast('✔ Senha do admin criada. Guarde-a em local seguro.');
+return null;
+}
 async function doLogin() {
 const user = document.getElementById("login-user").value.trim().toLowerCase();
 const pass = document.getElementById("login-pass").value;
 const users = getUsers();
 const candidate = users.find(u => u.username === user);
-const passOk = candidate ? await checkPassword(candidate, pass) : false;
-const found = passOk ? candidate : null;
 const errEl = document.getElementById("login-error");
 const btn   = document.getElementById("login-btn");
+// ── Primeiro acesso / senha padrão do admin ──────────────────────────────
+// O código não guarda senha utilizável. Se o admin ainda não definiu a sua
+// (ou ainda está na senha padrão conhecida), a senha digitada agora vira a
+// senha — exigindo o mínimo de força.
+let firstSetupDone = false;
+if (candidate && candidate.role === 'admin') {
+let weakDefault = false;
+try { weakDefault = looksHashed(candidate.password) && candidate.password === await sha256Hex('admin123'); } catch(e) {}
+if (candidate.needsSetup || !candidate.password || weakDefault) {
+// Antes de deixar definir a senha, confere se a nuvem já tem um admin com senha
+// real (caso de aparelho novo antes do sync inicial). Se tiver, adota essa senha
+// e pede o login normal — impede que alguém sobrescreva a senha existente.
+const cloudAdmin = await fcFetchCloudAdmin();
+let cloudReal = false;
+if (cloudAdmin && cloudAdmin.password && !cloudAdmin.needsSetup) {
+try { cloudReal = !(looksHashed(cloudAdmin.password) && cloudAdmin.password === await sha256Hex('admin123')); } catch(e) { cloudReal = true; }
+}
+if (cloudReal) {
+const cidx = users.findIndex(u => u.username === candidate.username);
+if (cidx > -1) { users[cidx].password = cloudAdmin.password; delete users[cidx].needsSetup; try { safeStorage.set(USERS_KEY, JSON.stringify(users)); } catch(e) {} }
+errEl.classList.remove("hidden");
+document.getElementById("login-error-text").textContent = "O admin já tem senha definida em outro dispositivo. Use a senha atual do admin.";
+document.getElementById("login-pass").value = "";
+return;
+}
+const setupErr = await fcAdminSetup(candidate, users, pass, weakDefault);
+if (setupErr) {
+errEl.classList.remove("hidden");
+document.getElementById("login-error-text").textContent = setupErr;
+document.getElementById("login-pass").value = "";
+return;
+}
+firstSetupDone = true;
+}
+}
+const passOk = firstSetupDone ? true : (candidate ? await checkPassword(candidate, pass) : false);
+const found = passOk ? candidate : null;
 if (!found) {
 errEl.classList.remove("hidden");
 document.getElementById("login-error-text").textContent =
@@ -11307,6 +11499,26 @@ if (greetingEl) {
 const h = new Date().getHours();
 greetingEl.innerHTML = h < 12 ? 'Bom dia <i class=fic-sun></i>' : h < 18 ? 'Boa tarde <i class=fic-sun></i>' : 'Boa noite <i class=fic-moon></i>';
 }
+try {
+// Aviso de "primeiro acesso" só numa instalação de fato nova (admin sem senha e
+// nenhum motorista cadastrado). Roda com atraso para dar tempo de a nuvem trazer
+// os dados reais — evita aparecer por engano no celular novo de um motorista antes
+// do sync. Não pré-preenche o usuário, para não induzir "admin" nem facilitar abuso.
+setTimeout(function() {
+try {
+if (safeStorage.get('fc_remembered_user')) return;
+const usersNow = (typeof getUsers === 'function') ? getUsers() : [];
+const adm = usersNow.find(u => u.role === 'admin');
+const hasDrivers = usersNow.some(u => u.role === 'driver');
+if (adm && (adm.needsSetup || !adm.password) && !hasDrivers) {
+const subEl = document.querySelector('#login-screen .login-form-sub');
+if (subEl) subEl.innerHTML = '<strong>Primeiro acesso.</strong> Entre com o usuário <strong>admin</strong> e escolha uma senha (mín. 8 caracteres) — ela será definida agora e não pode ser recuperada, então guarde-a bem.';
+const pInp = document.getElementById('login-pass');
+if (pInp) pInp.placeholder = 'Crie uma senha (mín. 8 caracteres)';
+}
+} catch(e) {}
+}, 3500);
+} catch(e) {}
 try {
 const raw = localStorage.getItem('frotacontrol_v3');
 if (raw) {
@@ -12072,9 +12284,16 @@ showToast('✔ Sessões salvas encerradas.');
   try {
     function applyHoverMode() {
       try {
-        if (!window || window.innerWidth <= 768) return;
         var s = document.getElementById('sidebar');
         var m = document.getElementById('main-area');
+        if (!window || window.innerWidth <= 768) {
+          // No celular a barra é um menu deslizante. Removemos o estado de
+          // "recolhida" do desktop para o conteúdo não ficar sobreposto/cortado
+          // ao girar a tela ou redimensionar a janela.
+          if (s) s.classList.remove('collapsed');
+          if (m) m.classList.remove('sidebar-collapsed');
+          return;
+        }
         if (s) s.classList.add('collapsed');
         if (m) m.classList.add('sidebar-collapsed');
         if (typeof window.sidebarCollapsed !== 'undefined') {
@@ -12179,15 +12398,11 @@ document.documentElement.setAttribute('data-theme', 'dark');
 const icon = document.getElementById('dark-mode-icon');
 if (icon) icon.innerHTML = `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
 }
-if (safeStorage.get('fc_sidebar_collapsed') === '1' && window.innerWidth > 768) {
-window.sidebarCollapsed = true;
-const sidebar  = document.getElementById('sidebar');
-const mainArea = document.getElementById('main-area');
-const chevron  = document.getElementById('sidebar-chevron');
-if (sidebar)  sidebar.classList.add('collapsed');
-if (mainArea) mainArea.classList.add('sidebar-collapsed');
-if (chevron)  chevron.textContent = '›';
-}
+// A barra usa o modo "expandir ao passar o mouse" no desktop (controlado por
+// applyHoverMode). O estado manual antigo (fc_sidebar_collapsed) conflitava com
+// esse modo e deixava o conteúdo sobreposto — então não é mais aplicado aqui e é
+// limpo por segurança, evitando que um valor antigo travado atrapalhe.
+safeStorage.set('fc_sidebar_collapsed', '0');
 applyAuth();
 })();
 let gsFocusIdx = -1;
@@ -14613,49 +14828,165 @@ window.switchTab = function(tabId, btn) {
     };
   }
 
+  // ═══════════════════════════════════════════════════════════════════════
+  // SYNC POR REGISTRO (merge) — em vez de "documento inteiro, o mais novo vence"
+  // (que fazia um dispositivo engolir as alterações do outro), agora unimos os
+  // dados registro a registro. Exclusões são rastreadas por "tombstones" para não
+  // ressuscitarem, e a escrita na nuvem usa transação para dois envios simultâneos
+  // não se perderem.
+  // ═══════════════════════════════════════════════════════════════════════
+  var SYNC_BASE_KEY = 'fc_sync_base';   // estado local no último sync (p/ detectar exclusões)
+  var TOMB_KEY      = 'fc_tombstones';  // registros excluídos { coleção: { id: quando } }
+  var TOMB_MAX_AGE  = 60 * 24 * 60 * 60 * 1000; // 60 dias
+  var SYNC_COLLECTIONS = { vehicles:'id', drivers:'id', transactions:'id', fueling:'id', freights:'id', maintenance:'id', fines:'id', docs:'id', bills:'id', contracts:'id', receivables:'id', financeiroContas:'id', impostosGerais:'id', impostosVeiculos:'id', agendaCustomEvents:'id' };
+  var SYNC_EXTRA_COLLECTIONS = { funcionarios:'id', pagamentosFuncionarios:'id', vendedores:'id', bancos:'id', avaliacoes:'id', horasTrabalhadas:'id', ferias:'id', treinamentos:'id', ocorrencias:'id', rotas:'id', usuarios:'username' };
+
+  function _fcNum(x){ return Number(x) || 0; }
+  function _fcIndex(arr, key){ var m = {}; if (Array.isArray(arr)) arr.forEach(function(r){ if (r && r[key] != null) m[String(r[key])] = r; }); return m; }
+  function _fcEq(a, b){ try { return JSON.stringify(a) === JSON.stringify(b); } catch(e){ return false; } }
+
+  function fcBuildLocalPayload(){
+    var raw = localStorage.getItem('frotacontrol_v3');
+    if (!raw) return null;
+    var lp = JSON.parse(raw);
+    lp._extra = fbGatherExtraData();
+    return lp;
+  }
+
+  // Detecta exclusões comparando o estado atual com a base (último sync) e grava tombstones.
+  function fcUpdateTombstones(localPayload){
+    var base = null; try { base = JSON.parse(localStorage.getItem(SYNC_BASE_KEY) || 'null'); } catch(e){}
+    var tomb = {}; try { tomb = JSON.parse(localStorage.getItem(TOMB_KEY) || '{}') || {}; } catch(e){}
+    if (base && localPayload){
+      var scan = function(colls, baseObj, locObj){
+        Object.keys(colls).forEach(function(name){
+          var key = colls[name];
+          var B = _fcIndex(baseObj && baseObj[name], key);
+          var L = _fcIndex(locObj && locObj[name], key);
+          Object.keys(B).forEach(function(id){
+            if (!(id in L)){ tomb[name] = tomb[name] || {}; if (!tomb[name][id]) tomb[name][id] = Date.now(); }
+            else if (tomb[name] && tomb[name][id]) { delete tomb[name][id]; } // re-adicionado → tira tombstone
+          });
+        });
+      };
+      scan(SYNC_COLLECTIONS, base, localPayload);
+      scan(SYNC_EXTRA_COLLECTIONS, base._extra, localPayload._extra);
+    }
+    var cut = Date.now() - TOMB_MAX_AGE;
+    Object.keys(tomb).forEach(function(n){ Object.keys(tomb[n]).forEach(function(id){ if (_fcNum(tomb[n][id]) < cut) delete tomb[n][id]; }); });
+    try { localStorage.setItem(TOMB_KEY, JSON.stringify(tomb)); } catch(e){}
+    return tomb;
+  }
+
+  function _fcMergeTombs(a, b){
+    var out = {}; [a || {}, b || {}].forEach(function(t){ Object.keys(t).forEach(function(n){ out[n] = out[n] || {}; Object.keys(t[n]).forEach(function(id){ out[n][id] = Math.max(_fcNum(out[n][id]), _fcNum(t[n][id])); }); }); }); return out;
+  }
+  // União de duas listas por chave; em conflito usa o lado mais novo; ignora tombstones.
+  function _fcUnion(localArr, cloudArr, key, localNewer, tombForColl){
+    var L = _fcIndex(localArr, key), C = _fcIndex(cloudArr, key), ids = {};
+    Object.keys(L).forEach(function(k){ ids[k] = 1; }); Object.keys(C).forEach(function(k){ ids[k] = 1; });
+    var out = [];
+    Object.keys(ids).forEach(function(id){
+      if (tombForColl && tombForColl[id]) return; // excluído → não entra
+      var inL = L[id], inC = C[id];
+      if (inL && inC) out.push(localNewer ? inL : inC);
+      else out.push(inL || inC);
+    });
+    return out;
+  }
+  function _fcMergeMap(a, b, localNewer){
+    a = a || {}; b = b || {}; var out = {}, keys = {};
+    Object.keys(a).forEach(function(k){ keys[k] = 1; }); Object.keys(b).forEach(function(k){ keys[k] = 1; });
+    Object.keys(keys).forEach(function(k){ var inA = (k in a), inB = (k in b); out[k] = (inA && inB) ? (localNewer ? a[k] : b[k]) : (inA ? a[k] : b[k]); });
+    return out;
+  }
+
+  function fcMergePayload(localPayload, cloudPayload, mergedTomb){
+    var lp = localPayload || {}, cp = cloudPayload || {};
+    var ln = _fcNum(lp.updatedAt) >= _fcNum(cp.updatedAt);
+    var out = {};
+    Object.keys(SYNC_COLLECTIONS).forEach(function(name){ out[name] = _fcUnion(lp[name], cp[name], SYNC_COLLECTIONS[name], ln, mergedTomb[name]); });
+    var le = lp._extra || {}, ce = cp._extra || {}, oe = {};
+    Object.keys(SYNC_EXTRA_COLLECTIONS).forEach(function(name){ oe[name] = _fcUnion(le[name], ce[name], SYNC_EXTRA_COLLECTIONS[name], ln, mergedTomb[name]); });
+    oe.freightVendedorMap = _fcMergeMap(le.freightVendedorMap, ce.freightVendedorMap, ln);
+    oe.pixSettings    = ln ? (le.pixSettings    || ce.pixSettings    || {}) : (ce.pixSettings    || le.pixSettings    || {});
+    oe.reciboSettings = ln ? (le.reciboSettings || ce.reciboSettings || {}) : (ce.reciboSettings || le.reciboSettings || {});
+    out._extra = oe;
+    out._tombstones = mergedTomb;
+    out.updatedAt = Date.now();
+    return out;
+  }
+
+  function _fcMainChanged(prevStr, newStr){
+    try { var a = JSON.parse(prevStr || '{}'), b = JSON.parse(newStr || '{}'); if (a) delete a.updatedAt; if (b) delete b.updatedAt; return JSON.stringify(a) !== JSON.stringify(b); }
+    catch(e){ return true; }
+  }
+  // Aplica o resultado mesclado ao armazenamento local; atualiza base e tombstones.
+  // Retorna true se o blob principal mudou (para sabermos se vale recarregar a tela).
+  function fcApplyMergedLocal(merged){
+    var prev = localStorage.getItem('frotacontrol_v3') || '';
+    var mainOnly = {}; Object.keys(merged).forEach(function(k){ if (k !== '_extra' && k !== '_tombstones') mainOnly[k] = merged[k]; });
+    var mainStr = JSON.stringify(mainOnly);
+    localStorage.setItem('frotacontrol_v3', mainStr);
+    if (merged._extra) fbApplyExtraData(merged._extra);
+    var baseObj = Object.assign({}, mainOnly); baseObj._extra = merged._extra || {};
+    try { localStorage.setItem(SYNC_BASE_KEY, JSON.stringify(baseObj)); } catch(e){}
+    if (merged._tombstones){ try { localStorage.setItem(TOMB_KEY, JSON.stringify(merged._tombstones)); } catch(e){} }
+    return _fcMainChanged(prev, mainStr);
+  }
+
+  // ENVIO: transação que lê a nuvem, mescla com o local e grava o resultado.
+  // Não altera a tela nem recarrega — o dispositivo recebe as mudanças do outro no PULL.
   function fbPushCloudData() {
     if (!window._db || !window._fbAuthed) return;
-    try {
-      var raw = localStorage.getItem('frotacontrol_v3');
-      if (!raw) return;
-      var data = JSON.parse(raw);
-      data._extra = fbGatherExtraData();
-      window._db.collection(FB_COLLECTION).doc(FB_DOC).set(data)
-        .then(function() { console.log('[Firebase] Dados sincronizados na nuvem.'); })
-        .catch(function(err) { console.warn('[Firebase] Falha ao sincronizar:', err.message); });
-    } catch (e) { console.warn('[Firebase] Erro ao preparar dados para sync:', e.message); }
+    var lp; try { lp = fcBuildLocalPayload(); } catch(e){ return; }
+    if (!lp) return;
+    var localTomb; try { localTomb = fcUpdateTombstones(lp); } catch(e){ localTomb = {}; }
+    var ref = window._db.collection(FB_COLLECTION).doc(FB_DOC);
+    window._db.runTransaction(function(tx){
+      return tx.get(ref).then(function(doc){
+        var cloud = doc.exists ? doc.data() : {};
+        var mergedTomb = _fcMergeTombs(localTomb, cloud._tombstones);
+        var merged = fcMergePayload(lp, cloud, mergedTomb);
+        tx.set(ref, merged);
+        return true;
+      });
+    }).then(function(){
+      try { localStorage.setItem(SYNC_BASE_KEY, JSON.stringify(lp)); } catch(e){}
+      console.log('[Firebase] Sync (merge) concluído.');
+    }).catch(function(err){ console.warn('[Firebase] Falha no sync (merge):', err && err.message); });
   }
   window.fbPushCloudData = fbPushCloudData;
 
-  // Ao carregar o app, compara nuvem x local pelo campo updatedAt e usa o mais recente.
-  // "Empate" (ambos sem updatedAt) não faz nada, pra não entrar em loop de reload.
+  // LEITURA: mescla a nuvem com o local (união por registro + tombstones), aplica
+  // o resultado aqui, devolve o convergido para a nuvem e recarrega só se algo mudou.
   function fbPullCloudData() {
     if (!window._db || !window._fbAuthed) return;
     window._db.collection(FB_COLLECTION).doc(FB_DOC).get()
       .then(function(doc) {
-        var local = null;
-        try { local = JSON.parse(localStorage.getItem('frotacontrol_v3') || 'null'); } catch (e) {}
-        if (!doc.exists) { if (local) fbPushCloudData(); return; }
+        var lp = null; try { lp = fcBuildLocalPayload(); } catch(e){}
+        if (!doc.exists) { if (lp) fbPushCloudData(); return; }
         var cloud = doc.data();
-        var cloudExtra = cloud._extra;
-        delete cloud._extra;
-        var cloudTime = cloud.updatedAt || 0;
-        var localTime = local && local.updatedAt || 0;
-        if (!local) {
-          localStorage.setItem('frotacontrol_v3', JSON.stringify(cloud));
-          fbApplyExtraData(cloudExtra);
+        var localTomb; try { localTomb = fcUpdateTombstones(lp || {}); } catch(e){ localTomb = {}; }
+        var mergedTomb = _fcMergeTombs(localTomb, cloud._tombstones);
+        if (!lp) {
+          var mergedNew = fcMergePayload({}, cloud, mergedTomb);
+          try { fcApplyMergedLocal(mergedNew); } catch(e){}
           console.log('[Firebase] Dados da nuvem carregados neste dispositivo novo.');
           location.reload();
-        } else if (cloudTime > localTime) {
-          localStorage.setItem('frotacontrol_v3', JSON.stringify(cloud));
-          fbApplyExtraData(cloudExtra);
-          console.log('[Firebase] Dados da nuvem são mais recentes, aplicando.');
-          location.reload();
-        } else if (localTime > cloudTime) {
-          fbPushCloudData();
+          return;
+        }
+        var merged = fcMergePayload(lp, cloud, mergedTomb);
+        var changed = false;
+        try { changed = fcApplyMergedLocal(merged); } catch(e){}
+        fbPushCloudData(); // devolve o convergido para os outros dispositivos verem
+        if (changed) {
+          if (typeof window.fcSafetySnapshot === 'function') window.fcSafetySnapshot('sync integrou dados da nuvem');
+          console.log('[Firebase] Mudanças de outro dispositivo integradas.');
+          setTimeout(function(){ location.reload(); }, 800);
         }
       })
-      .catch(function(err) { console.warn('[Firebase] Falha ao buscar dados da nuvem:', err.message); });
+      .catch(function(err){ console.warn('[Firebase] Falha ao buscar dados da nuvem:', err && err.message); });
   }
 
   // Botão manual de sincronização (ex: "Sincronizar agora" na barra de backup)
@@ -14663,7 +14994,7 @@ window.switchTab = function(tabId, btn) {
     if (!window._fbReady) { if (typeof showToast === 'function') showToast('Firebase ainda não conectou.', true); return; }
     if (!window._fbAuthed) { if (typeof showToast === 'function') showToast('Faça login novamente para sincronizar.', true); return; }
     if (typeof showToast === 'function') showToast('☁ Sincronizando com a nuvem...');
-    fbPushCloudData();
+    fbPullCloudData();
   };
 
   // ── Firebase Auth (login de administradores/escritório) ──────────────
