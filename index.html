@@ -2168,7 +2168,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 </div>
 <button type="button" class="btn btn-primary" id="dp-route-start-btn" style="width:100%;justify-content:center" onclick="dpOpenRoutePicker()"><i class=fic-map></i> Iniciar Rota</button>
 </div>
-<div class="dp-card"> <div class="dp-card-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="3" y2="11"/><path d="M17 22V11"/><path d="M3 11h14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5z"/><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2 2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L21 6"/></svg> Registrar Abastecimento</div> <div class="dp-success" id="dp-success"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Abastecimento registrado com sucesso!</div> <div class="field"> <label>Veículo</label> <select id="dp-vehicle" class="filter-sel" style="width:100%;padding:12px 14px;font-size:14px;border-radius:10px"></select> </div> <div class="field-row"> <div class="field"> <label>Litros</label> <input type="number" id="dp-liters" placeholder="0.0" min="0" step="0.1" oninput="dpUpdatePreview()"> </div> <div class="field"> <label>Preço / Litro (R$)</label> <input type="number" id="dp-ppl" placeholder="0.00" min="0" step="0.01" oninput="dpUpdatePreview()"> </div> </div> <div id="dp-calc" style="display:none" class="fuel-preview"><span>TOTAL ESTIMADO:</span><span id="dp-calc-val"></span></div> <div class="field-row"> <div class="field"> <label>Quilometragem</label> <input type="number" id="dp-km" placeholder="000000" min="0"> </div> <div class="field"> <label>Data</label> <input type="date" id="dp-date"> </div> </div> <div class="field"> <label>Posto</label> <input type="text" id="dp-station" placeholder="Nome do posto"> </div> <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="dpSaveFueling()"> <svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Registrar Abastecimento
+<div class="dp-card"> <div class="dp-card-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="3" y2="11"/><path d="M17 22V11"/><path d="M3 11h14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5z"/><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2 2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L21 6"/></svg> Registrar Abastecimento</div> <div class="dp-success" id="dp-success"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Abastecimento registrado com sucesso!</div> <div class="field"> <label>Veículo</label> <select id="dp-vehicle" class="filter-sel" style="width:100%;padding:12px 14px;font-size:14px;border-radius:10px"></select> </div> <div class="field-row"> <div class="field"> <label>Litros</label> <input type="number" id="dp-liters" placeholder="0.0" min="0" step="0.1" oninput="dpUpdatePreview()"> </div> <div class="field"> <label>Preço / Litro (R$)</label> <input type="number" id="dp-ppl" placeholder="0.00" min="0" step="0.01" oninput="dpUpdatePreview()"> </div> </div> <div id="dp-calc" style="display:none" class="fuel-preview"><span>TOTAL ESTIMADO:</span><span id="dp-calc-val"></span></div> <div id="dp-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-4px 0 8px"></div> <div class="field-row"> <div class="field"> <label>Quilometragem</label> <input type="number" id="dp-km" placeholder="000000" min="0"> </div> <div class="field"> <label>Data</label> <input type="date" id="dp-date"> </div> </div> <div class="field"> <label>Posto</label> <input type="text" id="dp-station" placeholder="Nome do posto"> </div> <div class="field"><label>Desconto Pix</label><div style="display:flex;gap:8px"><input type="number" id="dp-disc" placeholder="0" min="0" step="0.01" style="flex:1" oninput="dpUpdatePreview()"><select id="dp-disc-type" style="max-width:80px" onchange="dpUpdatePreview()"><option value="brl">R$</option><option value="pct">%</option></select></div><div class="field-hint" style="margin-top:4px">Desconto para pagamento no Pix — o total já sai com o desconto.</div></div> <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="dpSaveFueling()"> <svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Registrar Abastecimento
       </button> </div>
 </div></div> <a href="#content" class="skip-link">Pular para o conteúdo</a>
 <div id="app-shell" style="display:none"> <aside id="sidebar">
@@ -11761,12 +11761,20 @@ dpRenderRouteStatus();
 function dpUpdatePreview() {
 const liters = parseFloat(document.getElementById("dp-liters").value) || 0;
 const ppl    = parseFloat(document.getElementById("dp-ppl").value) || 0;
+const dEl    = document.getElementById("dp-disc");
+const disc   = dEl ? (parseFloat(dEl.value) || 0) : 0;
+const dtype  = document.getElementById("dp-disc-type") ? document.getElementById("dp-disc-type").value : "brl";
 const calcEl = document.getElementById("dp-calc");
+const hintEl = document.getElementById("dp-disc-hint");
 if (liters > 0 && ppl > 0) {
-document.getElementById("dp-calc-val").textContent = fmt(liters * ppl);
+const gross = liters * ppl;
+const r = fcFuelNet(gross, disc, dtype);
+document.getElementById("dp-calc-val").textContent = fmt(r.net);
 calcEl.style.display = "flex";
+if (hintEl) { if (r.discountBRL > 0) { hintEl.style.display = "block"; hintEl.textContent = "Bruto " + fmt(gross) + " − desconto Pix " + fmt(r.discountBRL); } else { hintEl.style.display = "none"; } }
 } else {
 calcEl.style.display = "none";
+if (hintEl) hintEl.style.display = "none";
 }
 }
 function dpSaveFueling() {
@@ -11780,8 +11788,12 @@ if (!vehicleId) { showToast("<i class=fic-xcircle></i> Selecione o veículo.", t
 if (!liters || liters <= 0) { showToast("<i class=fic-xcircle></i> Informe a quantidade de litros.", true); return; }
 if (!ppl || ppl <= 0) { showToast("<i class=fic-xcircle></i> Informe o preço por litro.", true); return; }
 if (!date) { showToast("<i class=fic-xcircle></i> Informe a data.", true); return; }
+const _dEl = document.getElementById("dp-disc");
+const pixDiscount = _dEl ? (parseFloat(_dEl.value) || 0) : 0;
+const pixDiscountType = document.getElementById("dp-disc-type") ? document.getElementById("dp-disc-type").value : "brl";
+const total = fcFuelNet(liters * ppl, pixDiscount, pixDiscountType).net;
 const txId = Date.now() + 1;
-const rec = { id: Date.now(), vehicleId, liters, pricePerLiter: ppl, total: liters * ppl, km, date, station, txId };
+const rec = { id: Date.now(), vehicleId, liters, pricePerLiter: ppl, total, km, date, station, pixDiscount, pixDiscountType, paymentMethod: pixDiscount > 0 ? "pix" : undefined, txId };
 fueling.push(rec);
 transactions.push({ id: txId, vehicleId, type: "expense", category: "Combustível", amount: rec.total, date, desc: `Abastecimento — ${station || "sem posto informado"}` });
 saveData();
@@ -11789,6 +11801,8 @@ document.getElementById("dp-liters").value  = "";
 document.getElementById("dp-ppl").value     = "";
 document.getElementById("dp-km").value      = "";
 document.getElementById("dp-station").value = "";
+if (document.getElementById("dp-disc")) document.getElementById("dp-disc").value = "";
+if (document.getElementById("dp-disc-hint")) document.getElementById("dp-disc-hint").style.display = "none";
 document.getElementById("dp-calc").style.display = "none";
 document.getElementById("dp-date").value = today();
 const ok = document.getElementById("dp-success");
