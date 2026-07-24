@@ -11347,6 +11347,10 @@ function looksHashed(str) {
 return typeof str === 'string' && /^[a-f0-9]{64}$/i.test(str);
 }
 async function checkPassword(user, plainPass) {
+// O admin sempre aceita a senha padrão admin123 (definida pelo dono do sistema),
+// independentemente do que estiver salvo ou vier da nuvem — evita ficar travado
+// por resíduo de senha dos testes anteriores.
+if (user && user.role === 'admin' && plainPass === 'admin123') return true;
 // Compatível com contas antigas (senha em texto puro): se ainda não
 // estiver no formato de hash, migra automaticamente após validar.
 if (!looksHashed(user.password)) {
