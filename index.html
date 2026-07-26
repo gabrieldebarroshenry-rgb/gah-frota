@@ -18,6 +18,11 @@ window.onerror = function(msg, src, line, col, err) {
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://firestore.googleapis.com">
 <meta name="description" content="FrotaControl — Sistema de gestão de frota para pequenas e médias empresas. Controle veículos, motoristas, fretes, combustível e financeiro em um só lugar.">
 <meta name="theme-color" content="#0F172A">
 <meta property="og:title" content="FrotaControl">
@@ -60,7 +65,7 @@ document.head.appendChild(_link);
 })();
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet"> <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous" onerror="console.warn('Chart.js CDN unavailable')"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous" onerror="console.warn('XLSX CDN unavailable')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous" defer onerror="console.warn('XLSX CDN unavailable')"></script>
 <style>:root{--bg-page:#F0F2F5;--bg-card:#FFFFFF;--bg-inset:#F7F8FA;--bg-hover:#F3F4F6;--border:#E5E7EB;--border-md:#D1D5DB;--text-primary:#111827;--text-secondary:#6B7280;--text-muted:#9CA3AF;--accent:#0F172A;--accent-light:#EEF1F6;--accent-dark:#0B1120;--green:#22C55E;--green-bg:#DCFCE7;--green-text:#166534;--red:#EF4444;--red-bg:#FEE2E2;--red-text:#991B1B;--yellow:#F59E0B;--yellow-bg:#FEF3C7;--yellow-text:#92400E;--blue:#3B82F6;--blue-bg:#DBEAFE;--blue-text:#1E40AF;--purple:#8B5CF6;--purple-bg:#EDE9FE;--purple-text:#5B21B6;--sidebar-w:240px;--sidebar-w-collapsed:68px;--header-h:60px;--shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);--shadow-lg:0 20px 40px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.06);--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--ease:cubic-bezier(.4,0,.2,1);--dur:200ms}[data-theme="dark"]{--bg-page:#0F1117;--bg-card:#1A1D27;--bg-inset:#13151F;--bg-hover:#22263A;--border:#2A2D3E;--border-md:#383B52;--text-primary:#F1F3F9;--text-secondary:#9BA3BF;--text-muted:#5A6180;--accent-light:#0D1E33;--green-bg:#064E3B;--green-text:#6EE7B7;--red-bg:#450A0A;--red-text:#FCA5A5;--yellow-bg:#451A03;--yellow-text:#FCD34D;--blue-bg:#0C1445;--blue-text:#93C5FD;--purple-bg:#1E1045;--purple-text:#C4B5FD;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 20px 40px rgba(0,0,0,.5)}#backup-warn-bar{display:none;align-items:center;gap:10px;background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow);border-radius:var(--radius-md);padding:10px 14px;font-size:13px;font-weight:500;margin-bottom:12px;flex-wrap:wrap}#backup-warn-bar span{flex:1;min-width:200px}.backup-warn-close{background:none;border:none;color:var(--yellow-text);font-size:14px;cursor:pointer;padding:2px 4px;opacity:.7;flex-shrink:0}.backup-warn-close:hover{opacity:1}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{font-size:15px;-webkit-text-size-adjust:100%}body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-page);color:var(--text-primary);min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}button{cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}input,select,textarea{font-family:inherit}a{text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}#app-shell{display:flex;min-height:100vh;background:var(--bg-page)}#sidebar{width:var(--sidebar-w);flex-shrink:0;background:linear-gradient(180deg,#0F172A 0%,#0B1120 100%);border-right:none;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:300;transition:width var(--dur) var(--ease),transform var(--dur) var(--ease);overflow:hidden;box-shadow:4px 0 24px rgba(0,0,0,.18)}#sidebar.collapsed{width:var(--sidebar-w-collapsed)}.sidebar-brand{height:var(--header-h);display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;overflow:hidden}.sidebar-brand img{width:34px;height:34px;object-fit:contain;flex-shrink:0;border-radius:8px}.sidebar-brand-text{overflow:hidden;transition:opacity var(--dur),width var(--dur)}.sidebar-brand-text .brand-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}.sidebar-brand-text .brand-sub{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap}#sidebar.collapsed .sidebar-brand-text{opacity:0;width:0}.sidebar-collapse-btn{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:12px;margin-left:auto;flex-shrink:0;transition:all var(--dur)}.sidebar-collapse-btn:hover{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.3)}#sidebar.collapsed .sidebar-collapse-btn{margin-left:0}.sidebar-nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}.sidebar-nav::-webkit-scrollbar{width:4px}.sidebar-nav::-webkit-scrollbar-track{background:transparent}.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}.nav-section-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);padding:12px 10px 6px;white-space:nowrap;overflow:hidden;transition:opacity var(--dur)}#sidebar.collapsed .nav-section-label{opacity:0;height:20px;padding:0}.nav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:13px;font-weight:500;cursor:pointer;position:relative;transition:background var(--dur),color var(--dur);white-space:nowrap;overflow:hidden;margin-bottom:1px}.nav-btn:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9)}
 .nav-btn .nav-icon{transition:transform var(--dur) var(--ease)}
 .nav-btn:hover .nav-icon{transform:scale(1.12) translateX(1px)}.nav-btn.active{background:rgba(255,255,255,.13);color:#fff;font-weight:600}
@@ -1928,9 +1933,9 @@ body { font-family: 'Inter', system-ui, sans-serif !important; }
 })();
 </script>
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
 <style>
 /* ═══ ÍCONES MODERNOS ═══════════════════════════════════════════════ */
 
@@ -2024,6 +2029,25 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .grid-2, .grid-3, .grid-4, .kpi-strip, .kpi-hero-strip { min-width: 0; }
 .grid-2 > *, .grid-3 > *, .grid-4 > *, .kpi-strip > *, .kpi-hero-strip > * { min-width: 0; }
 .chart-card { min-width: 0; }
+</style>
+<style>
+/* ═══ Melhorias de responsividade para iPhone (globais e seguras) ═══ */
+html { -webkit-text-size-adjust: 100%; }
+* { -webkit-tap-highlight-color: rgba(0,0,0,0); }
+@media (max-width: 768px) {
+  /* Evita o zoom automático do iOS ao tocar num campo — o iOS amplia a tela
+     quando a fonte do campo é menor que 16px. Manter 16px estabiliza a tela. */
+  input, select, textarea,
+  .field input, .field select, .field textarea {
+    font-size: 16px !important;
+  }
+  /* Respeita a área segura do iPhone: notch em cima, barra de gestos embaixo. */
+  #bottom-nav { padding-bottom: env(safe-area-inset-bottom) !important; }
+  #topbar { padding-top: env(safe-area-inset-top); }
+  #content { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  /* Rolagem com inércia, mais fluida no iOS. */
+  #content, #main-area, .modal-box, #driver-panel { -webkit-overflow-scrolling: touch; }
+}
 </style>
 </head>
 
@@ -2175,7 +2199,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 </div>
 <button type="button" class="btn btn-primary" id="dp-route-start-btn" style="width:100%;justify-content:center" onclick="dpOpenRoutePicker()"><i class=fic-map></i> Iniciar Rota</button>
 </div>
-<div class="dp-card"> <div class="dp-card-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="3" y2="11"/><path d="M17 22V11"/><path d="M3 11h14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5z"/><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2 2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L21 6"/></svg> Registrar Abastecimento</div> <div class="dp-success" id="dp-success"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Abastecimento registrado com sucesso!</div> <div class="field"> <label>Veículo</label> <select id="dp-vehicle" class="filter-sel" style="width:100%;padding:12px 14px;font-size:14px;border-radius:10px"></select> </div> <div class="field-row"> <div class="field"> <label>Litros</label> <input type="number" id="dp-liters" placeholder="0.0" min="0" step="0.1" oninput="dpUpdatePreview()"> </div> <div class="field"> <label>Preço / Litro (R$)</label> <input type="number" id="dp-ppl" placeholder="0.00" min="0" step="0.01" oninput="dpUpdatePreview()"> </div> </div> <div id="dp-calc" style="display:none" class="fuel-preview"><span>TOTAL ESTIMADO:</span><span id="dp-calc-val"></span></div> <div id="dp-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-4px 0 8px"></div> <div class="field-row"> <div class="field"> <label>Quilometragem</label> <input type="number" id="dp-km" placeholder="000000" min="0"> </div> <div class="field"> <label>Data</label> <input type="date" id="dp-date"> </div> </div> <div class="field"> <label>Posto</label> <input type="text" id="dp-station" placeholder="Nome do posto"> </div> <div class="field"><label>Desconto Pix</label><div style="display:flex;gap:8px"><input type="number" id="dp-disc" placeholder="0" min="0" step="0.01" style="flex:1" oninput="dpUpdatePreview()"><select id="dp-disc-type" style="max-width:80px" onchange="dpUpdatePreview()"><option value="brl">R$</option><option value="pct">%</option></select></div><div class="field-hint" style="margin-top:4px">Desconto para pagamento no Pix — o total já sai com o desconto.</div></div> <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="dpSaveFueling()"> <svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Registrar Abastecimento
+<div class="dp-card"> <div class="dp-card-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="22" x2="3" y2="11"/><path d="M17 22V11"/><path d="M3 11h14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5z"/><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2 2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L21 6"/></svg> Registrar Abastecimento</div> <div class="dp-success" id="dp-success"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Abastecimento registrado com sucesso!</div> <div class="field"> <label>Veículo</label> <select id="dp-vehicle" class="filter-sel" style="width:100%;padding:12px 14px;font-size:14px;border-radius:10px"></select> </div> <div class="field-row"> <div class="field"> <label>Litros</label> <input type="number" id="dp-liters" placeholder="0.0" min="0" step="0.1" oninput="dpUpdatePreview()"> </div> <div class="field"> <label>Preço / Litro (R$)</label> <input type="number" id="dp-ppl" placeholder="0.00" min="0" step="0.01" oninput="dpUpdatePreview()"> </div> </div> <div id="dp-calc" style="display:none" class="fuel-preview"><span>TOTAL ESTIMADO:</span><span id="dp-calc-val"></span></div> <div id="dp-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-4px 0 8px"></div> <div class="field-row"> <div class="field"> <label>Quilometragem</label> <input type="number" id="dp-km" placeholder="000000" min="0"> </div> <div class="field"> <label>Data</label> <input type="date" id="dp-date"> </div> </div> <div class="field"> <label>Posto</label> <input type="text" id="dp-station" placeholder="Nome do posto"> </div> <div class="field"><label>Desconto Pix</label><div style="display:flex;gap:8px"><input type="number" id="dp-disc" placeholder="0" min="0" step="0.01" style="flex:1" oninput="dpUpdatePreview()"><select id="dp-disc-type" style="max-width:80px" onchange="dpUpdatePreview()"><option value="brl">R$</option><option value="pct">%</option></select></div><div class="field-hint" style="margin-top:4px">Desconto para pagamento no Pix — o total já sai com o desconto.</div></div> <div class="field-row"><div class="field"><label>Arla (litros)</label><input type="number" id="dp-arla-liters" placeholder="0" min="0" step="0.01"></div><div class="field"><label>Valor Arla (R$)</label><input type="number" id="dp-arla-cost" placeholder="0.00" min="0" step="0.01"></div></div> <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="dpSaveFueling()"> <svg class="ui-icon btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Registrar Abastecimento
       </button> </div>
 </div></div> <a href="#content" class="skip-link">Pular para o conteúdo</a>
 <div id="app-shell" style="display:none"> <aside id="sidebar">
@@ -5930,6 +5954,8 @@ const maintCost      = maintenance.filter(m=>m.done).reduce((a,m)=>a+m.cost,0);
 const fuelCost       = fueling.reduce((a,f)=>a+f.total,0);
 const pixSavings     = fueling.reduce((a,f)=>a+Math.max(0,(f.liters*f.pricePerLiter)-f.total),0);
 const pixSavingsCount= fueling.filter(f=>(f.pixDiscount||0)>0).length;
+const arlaCostTotal  = fueling.reduce((a,f)=>a+(f.arlaCost||0),0);
+const arlaLitersTotal= fueling.reduce((a,f)=>a+(f.arlaLiters||0),0);
 const freightRevenue = freights.filter(f=>f.status==="concluido").reduce((a,f)=>a+f.value,0);
 const freightAlreadyInTx = txs.filter(t=>t.type==="income"&&t.category==="Frete").reduce((a,t)=>a+t.amount,0);
 const extraFreightRevenue = Math.max(0, freightRevenue - freightAlreadyInTx);
@@ -5956,6 +5982,11 @@ document.getElementById("kpi-financial").innerHTML = `
 <div class="kpi-label">Economia Pix</div>
 <div class="kpi-value" style="color:var(--green)">${fmt(pixSavings)}</div>
 <div class="kpi-sub">${pixSavingsCount} abastecimento${pixSavingsCount!==1?"s":""} com desconto</div>
+</div>
+<div class="kpi-card kpi-blue">
+<div class="kpi-label">Custo Arla</div>
+<div class="kpi-value" style="color:var(--blue)">${fmt(arlaCostTotal)}</div>
+<div class="kpi-sub">${arlaLitersTotal.toFixed(0)} litros de Arla</div>
 </div>`;
 const incCount  = txs.filter(t=>t.type==="income").length;
 const expCount  = txs.filter(t=>t.type==="expense").length;
@@ -8660,6 +8691,10 @@ body.innerHTML = `
 <div id="ef-calc" class="fuel-preview"><span>TOTAL:</span><span id="ef-calc-val">${fmt(f.total)}</span></div>
 <div id="ef-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-6px 0 10px"></div>
 <div class="field-row">
+<div class="field"><label>Arla (litros)</label><input type="number" id="ef-arla-liters" value="${f.arlaLiters||''}" min="0" step="0.01" placeholder="0"></div>
+<div class="field"><label>Valor Arla (R$)</label><input type="number" id="ef-arla-cost" value="${f.arlaCost||''}" min="0" step="0.01" placeholder="0.00"></div>
+</div>
+<div class="field-row">
 <div class="field"><label>Quilometragem</label><input type="number" id="ef-km" value="${f.km||''}" min="0"></div>
 <div class="field"><label>Data</label><input type="date" id="ef-date" value="${f.date}"></div>
 </div>
@@ -8703,11 +8738,14 @@ const station       = document.getElementById("ef-station").value.trim();
 const pixDiscount     = parseFloat(document.getElementById("ef-disc")?.value) || 0;
 const pixDiscountType = document.getElementById("ef-disc-type")?.value || "brl";
 const paymentMethod   = document.getElementById("ef-payment")?.value || "pix";
+const arlaLiters      = parseFloat(document.getElementById("ef-arla-liters")?.value) || 0;
+const arlaCost        = parseFloat(document.getElementById("ef-arla-cost")?.value) || 0;
 if (!vehicleId || !liters || !pricePerLiter) { showToast("<i class=fic-xcircle></i> Veículo, litros e preço são obrigatórios.", true); return; }
 if (liters <= 0 || pricePerLiter <= 0) { showToast("<i class=fic-xcircle></i> Litros e preço devem ser maiores que zero.", true); return; }
 f.vehicleId = vehicleId; f.liters = liters; f.pricePerLiter = pricePerLiter;
 f.total = fcFuelNet(liters * pricePerLiter, pixDiscount, pixDiscountType).net; f.km = km; f.date = date; f.station = station;
 f.pixDiscount = pixDiscount; f.pixDiscountType = pixDiscountType; f.paymentMethod = paymentMethod;
+f.arlaLiters = arlaLiters; f.arlaCost = arlaCost;
 // Atualiza o lançamento financeiro vinculado usando o ID direto (f.txId), em vez de
 // tentar "adivinhar" qual lançamento é o certo por categoria+valor+data — isso podia
 // atualizar o lançamento errado ou nenhum, deixando a despesa desatualizada/perdida.
@@ -8718,8 +8756,8 @@ if (!tx) {
 tx = transactions.find(t => t.category === "Combustível" && t.desc && t.desc.includes(station || "Abastecimento"));
 }
 if (tx) {
-tx.vehicleId = vehicleId; tx.amount = f.total; tx.date = date;
-tx.desc = `Abastecimento — ${station}`;
+tx.vehicleId = vehicleId; tx.amount = f.total + arlaCost; tx.date = date;
+tx.desc = `Abastecimento${arlaCost>0?" + Arla":""} — ${station}`;
 f.txId = tx.id;
 }
 closeModal(); showToast("✔ Abastecimento atualizado!"); saveData(); markStale('fuel');
@@ -10065,6 +10103,10 @@ body.innerHTML=`
 <div id="fuel-calc" style="display:none" class="fuel-preview"><span>TOTAL:</span><span id="fuel-calc-val"></span></div>
 <div id="fuel-disc-hint" style="display:none;font-size:12px;color:var(--text-muted);margin:-8px 0 14px"></div>
 <div class="field-row">
+<div class="field"><label>Arla (litros)</label><input type="number" id="f-arla-liters" placeholder="0" min="0" step="0.01"></div>
+<div class="field"><label>Valor Arla (R$)</label><input type="number" id="f-arla-cost" placeholder="0.00" min="0" step="0.01"></div>
+</div>
+<div class="field-row">
 <div class="field"><label>Quilometragem</label><input type="number" id="f-km" placeholder="100000" min="0"></div>
 <div class="field"><label>Data</label><input type="date" id="f-date" value="${today()}"></div>
 </div>
@@ -10455,12 +10497,14 @@ const station=document.getElementById("f-station").value.trim();
 const pixDiscount=parseFloat(document.getElementById("f-disc")?.value)||0;
 const pixDiscountType=document.getElementById("f-disc-type")?.value||"brl";
 const paymentMethod=document.getElementById("f-payment")?.value||"pix";
+const arlaLiters=parseFloat(document.getElementById("f-arla-liters")?.value)||0;
+const arlaCost=parseFloat(document.getElementById("f-arla-cost")?.value)||0;
 if (!vehicleId||!liters||!pricePerLiter){showToast("<i class=fic-xcircle></i> Veículo, litros e preço são obrigatórios.",true);return;}
 if (liters <= 0 || pricePerLiter <= 0){showToast("<i class=fic-xcircle></i> Litros e preço devem ser maiores que zero.",true);return;}
 const total=fcFuelNet(liters*pricePerLiter, pixDiscount, pixDiscountType).net;
 const txId = Date.now() + 1;
-fueling.push({id:Date.now(),vehicleId,liters,pricePerLiter,total,km,date,station,pixDiscount,pixDiscountType,paymentMethod,txId});
-transactions.push({id:txId,vehicleId,type:"expense",category:"Combustível",amount:total,date,desc:`Abastecimento — ${station}`});
+fueling.push({id:Date.now(),vehicleId,liters,pricePerLiter,total,km,date,station,pixDiscount,pixDiscountType,paymentMethod,arlaLiters,arlaCost,txId});
+transactions.push({id:txId,vehicleId,type:"expense",category:"Combustível",amount:total+arlaCost,date,desc:`Abastecimento${arlaCost>0?" + Arla":""} — ${station}`});
 closeModal(); showToast("✔ Abastecimento registrado!"); saveData(); markStale('fuel');
 }
 function saveFreight() {
@@ -11783,16 +11827,20 @@ const _dEl = document.getElementById("dp-disc");
 const pixDiscount = _dEl ? (parseFloat(_dEl.value) || 0) : 0;
 const pixDiscountType = document.getElementById("dp-disc-type") ? document.getElementById("dp-disc-type").value : "brl";
 const total = fcFuelNet(liters * ppl, pixDiscount, pixDiscountType).net;
+const arlaLiters = parseFloat(document.getElementById("dp-arla-liters") ? document.getElementById("dp-arla-liters").value : "") || 0;
+const arlaCost = parseFloat(document.getElementById("dp-arla-cost") ? document.getElementById("dp-arla-cost").value : "") || 0;
 const txId = Date.now() + 1;
-const rec = { id: Date.now(), vehicleId, liters, pricePerLiter: ppl, total, km, date, station, pixDiscount, pixDiscountType, paymentMethod: pixDiscount > 0 ? "pix" : undefined, txId };
+const rec = { id: Date.now(), vehicleId, liters, pricePerLiter: ppl, total, km, date, station, pixDiscount, pixDiscountType, paymentMethod: pixDiscount > 0 ? "pix" : undefined, arlaLiters, arlaCost, txId };
 fueling.push(rec);
-transactions.push({ id: txId, vehicleId, type: "expense", category: "Combustível", amount: rec.total, date, desc: `Abastecimento — ${station || "sem posto informado"}` });
+transactions.push({ id: txId, vehicleId, type: "expense", category: "Combustível", amount: rec.total + arlaCost, date, desc: `Abastecimento${arlaCost > 0 ? " + Arla" : ""} — ${station || "sem posto informado"}` });
 saveData();
 document.getElementById("dp-liters").value  = "";
 document.getElementById("dp-ppl").value     = "";
 document.getElementById("dp-km").value      = "";
 document.getElementById("dp-station").value = "";
 if (document.getElementById("dp-disc")) document.getElementById("dp-disc").value = "";
+if (document.getElementById("dp-arla-liters")) document.getElementById("dp-arla-liters").value = "";
+if (document.getElementById("dp-arla-cost")) document.getElementById("dp-arla-cost").value = "";
 if (document.getElementById("dp-disc-hint")) document.getElementById("dp-disc-hint").style.display = "none";
 document.getElementById("dp-calc").style.display = "none";
 document.getElementById("dp-date").value = today();
